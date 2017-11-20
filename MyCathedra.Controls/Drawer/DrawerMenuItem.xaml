@@ -1,0 +1,18 @@
+﻿<UserControl x:Name="drawerMenuItem" x:Class="MyCathedra.Controls.Drawer.DrawerMenuItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyCathedra.Controls.Drawer"
+             mc:Ignorable="d" 
+             MaxHeight="48"
+             d:DesignHeight="48" d:DesignWidth="300">
+    <Grid x:Name="itemGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="itemIconColumn" Width="48"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Path x:Name="itemIcon" Stretch="Fill" Fill="{Binding Foreground, ElementName=drawerMenuItem}" Margin="8"/>
+        <TextBlock x:Name="itemLabel" Grid.Column="1"  TextWrapping="Wrap" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Foreground="{Binding Foreground, ElementName=drawerMenuItem}" FontFamily="{Binding FontFamily, ElementName=drawerMenuItem}" FontSize="{Binding FontSize, ElementName=drawerMenuItem}" FontWeight="{Binding FontWeight, ElementName=drawerMenuItem}" FontStyle="{Binding FontStyle, ElementName=drawerMenuItem}"/>
+    </Grid>
+</UserControl>

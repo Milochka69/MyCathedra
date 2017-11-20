@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Blend for Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCathedra", "MyCathedra\MyCathedra.csproj", "{73B815D4-E261-4364-8079-E4B6759AE7E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCathedra.Controls", "MyCathedra.Controls\MyCathedra.Controls.csproj", "{CDDED809-6AFF-42CB-8254-68958F43312F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{73B815D4-E261-4364-8079-E4B6759AE7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73B815D4-E261-4364-8079-E4B6759AE7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73B815D4-E261-4364-8079-E4B6759AE7E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDDED809-6AFF-42CB-8254-68958F43312F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDDED809-6AFF-42CB-8254-68958F43312F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDDED809-6AFF-42CB-8254-68958F43312F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDDED809-6AFF-42CB-8254-68958F43312F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61CDA2BA-C491-45D2-8A3F-B8A10D82186B}
 	EndGlobalSection
 EndGlobal
