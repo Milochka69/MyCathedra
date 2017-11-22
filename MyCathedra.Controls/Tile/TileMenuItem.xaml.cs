@@ -14,12 +14,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyCathedra.Controls.Drawer
+namespace MyCathedra.Controls.Tile
 {
     /// <summary>
     /// Логика взаимодействия для DrawerMenuItem.xaml
     /// </summary>
-    public partial class DrawerMenuItem : UserControl
+    public partial class TileMenuItem : UserControl
     {
         /// <summary>
         /// The image displayed by the button.
@@ -30,15 +30,11 @@ namespace MyCathedra.Controls.Drawer
         {
             get
             {
-                if (itemIcon.Data == null)
-                    itemIconColumn.Width = new GridLength(0, GridUnitType.Pixel);
-
                 return itemIcon.Data;
             }
             set
             {
                 itemIcon.Data = value;
-                itemIconColumn.Width = new GridLength(48, GridUnitType.Pixel);
             }
         }
 
@@ -58,7 +54,20 @@ namespace MyCathedra.Controls.Drawer
             }
         }
 
-        public DrawerMenuItem()
+        [Description("Short explanations."), Category("Maket")]
+        public String Hint
+        {
+            get
+            {
+                return itemHint.Text;
+            }
+            set
+            {
+                itemHint.Text = value;
+            }
+        }
+
+        public TileMenuItem()
         {
             InitializeComponent();
         }

@@ -48,12 +48,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Drawer\DrawerMenuItem.xaml">
+    <Page Include="Tile\TileMenuItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Drawer\DrawerMenuItem.xaml.cs">
-      <DependentUpon>DrawerMenuItem.xaml</DependentUpon>
+    <Compile Include="Tile\Converter\ForecolorConverter.cs" />
+    <Compile Include="Tile\TileMenuItem.xaml.cs">
+      <DependentUpon>TileMenuItem.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
