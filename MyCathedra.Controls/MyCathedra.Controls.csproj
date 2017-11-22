@@ -52,7 +52,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Tile\Converter\ForecolorConverter.cs" />
     <Compile Include="Tile\TileMenuItem.xaml.cs">
       <DependentUpon>TileMenuItem.xaml</DependentUpon>
     </Compile>
