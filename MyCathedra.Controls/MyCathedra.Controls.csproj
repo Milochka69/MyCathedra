@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils\HorizontalToTextAlignmentConverter.cs" />
     <Page Include="Tile\TileMenuContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
