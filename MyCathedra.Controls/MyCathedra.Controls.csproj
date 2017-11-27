@@ -48,10 +48,17 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Tile\TileMenuContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Tile\TileMenuItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Tile\TileMenuContainer.xaml.cs">
+      <DependentUpon>TileMenuContainer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tile\TileMenuItem.xaml.cs">
       <DependentUpon>TileMenuItem.xaml</DependentUpon>
     </Compile>
