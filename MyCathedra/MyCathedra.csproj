@@ -98,6 +98,14 @@
       <Project>{cdded809-6aff-42cb-8254-68958f43312f}</Project>
       <Name>MyCathedra.Controls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyCathedra.DatabaseManager.Model\MyCathedra.DatabaseManager.Model.csproj">
+      <Project>{75190f98-9fb6-4f56-b7fa-03f815e853a3}</Project>
+      <Name>MyCathedra.DatabaseManager.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyCathedra.DatabaseManager\MyCathedra.DatabaseManager.csproj">
+      <Project>{63ce37c9-5d3a-42c9-9745-a175e12a7518}</Project>
+      <Name>MyCathedra.DatabaseManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
