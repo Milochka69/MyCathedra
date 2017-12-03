@@ -33,6 +33,9 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)" Storyboard.TargetName="tileMenuItem">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="10"/>
             </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="rowSpace">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="4"/>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="OnLeave">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)" Storyboard.TargetName="tileMenuItem">
@@ -46,6 +49,9 @@
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)" Storyboard.TargetName="tileMenuItem">
                 <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="5"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="rowSpace">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="8"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Button.Resources>
@@ -63,7 +69,7 @@
     <Grid x:Name="itemGrid">
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="4"/>
+            <RowDefinition x:Name="rowSpace" Height="8"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Path x:Name="itemIcon" Stretch="Uniform" Margin="{Binding Padding, ElementName=tileMenuItem}" Opacity="0.8"/>
