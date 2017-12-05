@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MyCathedra.Pages;
+using System.Windows;
 
 namespace MyCathedra
 {
@@ -10,6 +11,11 @@ namespace MyCathedra
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            mainFrame.Navigate(new MainPage());
         }
     }
 }
