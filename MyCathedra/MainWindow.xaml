@@ -4,30 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCathedra"
-        xmlns:Utils="clr-namespace:MyCathedra.Controls.Utils;assembly=MyCathedra.Controls" 
         x:Class="MyCathedra.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1024" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
-    <Window.Resources>
-        <Utils:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <ControlTemplate x:Key="FrameControlTemplate" TargetType="Frame">
-            <DockPanel>
-                <StackPanel  Margin="7" Orientation="Horizontal" DockPanel.Dock="Top">
-                    <Button Command="{x:Static NavigationCommands.BrowseBack}" Visibility="{TemplateBinding CanGoBack, Converter={StaticResource BooleanToVisibilityConverter}}" Width="48" Height="24">
-                        <Path Margin="2"
-                              Data="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
-                              Fill="#444"
-                              Stretch="Uniform" /> 
-                    </Button>
-                    <Button Content="Forward you dogs!" Command="{x:Static NavigationCommands.BrowseForward}" IsEnabled="{TemplateBinding CanGoForward}" Visibility="Collapsed"/>
-                </StackPanel>
-                <Border>
-                    <ContentPresenter />
-                </Border>
-            </DockPanel>
-        </ControlTemplate>
-    </Window.Resources>
-    <DockPanel>
-        <Frame Name="mainFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Template="{DynamicResource FrameControlTemplate}"/>
+        Title="{Binding ElementName=mainFrame, Path=Content.Title}" Height="700" Width="1024" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+
+    <DockPanel Name="navigationPanel">
+        <Frame Name="mainFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{DynamicResource {x:Type Frame}}"/>
     </DockPanel>
 </Window>

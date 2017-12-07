@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:MyCathedra.Pages.CathedraInfo"
       xmlns:Tile="clr-namespace:MyCathedra.Controls.Tile;assembly=MyCathedra.Controls" x:Class="MyCathedra.Pages.CathedraInfo.CathedraPage"
       mc:Ignorable="d"
-      Title="CathedraDefault">
+      Title="Общие сведения">
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <WrapPanel HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" Margin="16">
