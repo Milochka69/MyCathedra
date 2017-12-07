@@ -53,13 +53,12 @@
                                         </Button>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
-
                             </ItemsControl>
                         </StackPanel>
+                        
                         <AdornerDecorator>
                             <ContentPresenter Name="PART_NavWinCP" ClipToBounds="true"/>
                         </AdornerDecorator>
-
                     </DockPanel>
                 </ControlTemplate>
             </Setter.Value>

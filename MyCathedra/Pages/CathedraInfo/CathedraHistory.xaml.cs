@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace MyCathedra.Pages.CathedraInfo
 {
     /// <summary>
-    /// Логика взаимодействия для CathedraDefault.xaml
+    /// Логика взаимодействия для CathedraHistory.xaml
     /// </summary>
-    public partial class CathedraPage : Page
+    public partial class CathedraHistory : Page
     {
-        public CathedraPage()
+        public CathedraHistory()
         {
             InitializeComponent();
         }
