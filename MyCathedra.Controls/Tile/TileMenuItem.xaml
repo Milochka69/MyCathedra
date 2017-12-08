@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MyCathedra.Controls.Tile"
              xmlns:Utils="clr-namespace:MyCathedra.Controls.Utils" x:Name="tileMenuItem" x:Class="MyCathedra.Controls.Tile.TileMenuItem"
-             mc:Ignorable="d" d:DesignWidth="200" Height="190" Padding="5" HorizontalContentAlignment="Center">
+             mc:Ignorable="d" d:DesignWidth="200" Height="190" Padding="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch">
+    
     <Button.Resources>
         <Utils:HorizontalToTextAlignmentConverter x:Key="HorizontalToTextAlignmentConverter"/>
         <Storyboard x:Key="OnHover">
@@ -72,7 +73,7 @@
             <RowDefinition x:Name="rowSpace" Height="8"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Path x:Name="itemIcon" Stretch="Uniform" Margin="{Binding Padding, ElementName=tileMenuItem}" Opacity="0.8"/>
+        <Path x:Name="itemIcon" Stretch="Uniform" Width="40"  Height="40" Opacity="0.8" HorizontalAlignment="{Binding HorizontalContentAlignment, ElementName=tileMenuItem}" VerticalAlignment="Bottom"/>
         <StackPanel Grid.Row="2" Margin="{Binding Padding, ElementName=tileMenuItem}">
             <TextBlock x:Name="itemLabel"  TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Foreground="{Binding Foreground, ElementName=tileMenuItem}" FontFamily="{Binding FontFamily, ElementName=tileMenuItem}" FontSize="{Binding FontSize, ElementName=tileMenuItem}" FontWeight="{Binding FontWeight, ElementName=tileMenuItem}" FontStyle="{Binding FontStyle, ElementName=tileMenuItem}" HorizontalAlignment="{Binding HorizontalContentAlignment, ElementName=tileMenuItem}" VerticalAlignment="{Binding VerticalAlignment, ElementName=tileMenuItem}" TextAlignment="{Binding HorizontalContentAlignment, Converter={StaticResource HorizontalToTextAlignmentConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TileMenuItem}}}"/>
             <TextBlock x:Name="itemHint"  TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Foreground="{Binding Foreground, ElementName=tileMenuItem}" FontFamily="{Binding FontFamily, ElementName=tileMenuItem}" FontSize="{Binding FontSize, ElementName=tileMenuItem}" FontWeight="{Binding FontWeight, ElementName=tileMenuItem}" FontStyle="{Binding FontStyle, ElementName=tileMenuItem}" HorizontalAlignment="{Binding HorizontalContentAlignment, ElementName=tileMenuItem}" VerticalAlignment="{Binding VerticalAlignment, ElementName=tileMenuItem}" TextAlignment="{Binding HorizontalContentAlignment, Converter={StaticResource HorizontalToTextAlignmentConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TileMenuItem}}}" Opacity="0.7"/>

@@ -11,6 +11,37 @@ namespace MyCathedra.Controls.Tile
     public partial class TileMenuItem : Button
     {
         /// <summary>
+        /// The width of image displayed by the button.
+        /// </summary>
+        [Description("The width of image displayed by the button."), Category("Макет")]
+        public double IconWidth
+        {
+            get
+            {
+                return itemIcon.Width;
+            }
+            set
+            {
+                itemIcon.Width = value;
+            }
+        }
+        /// <summary>
+        /// The height of image displayed by the button.
+        /// </summary>
+        [Description("The height of image displayed by the button."), Category("Макет")]
+        public double IconHeight
+        {
+            get
+            {
+                return itemIcon.Height;
+            }
+            set
+            {
+                itemIcon.Height = value;
+            }
+        }
+
+        /// <summary>
         /// The color of image displayed by the button.
         /// </summary>
         [Description("The color of image displayed by the button."), Category("Кисть")]
