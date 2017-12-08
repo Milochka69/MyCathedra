@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace MyCathedra.Controls.Tile
 {
@@ -10,6 +12,29 @@ namespace MyCathedra.Controls.Tile
     /// </summary>
     public partial class TileMenuItem : Button
     {
+        public static readonly DependencyProperty IcongroundProperty = DependencyProperty.RegisterAttached(
+            "Iconground",
+            typeof(Brush),
+            typeof(TileMenuItem),
+            new UIPropertyMetadata {
+                DefaultValue = Brushes.Black,
+                PropertyChangedCallback = new PropertyChangedCallback(CurrentIcongroundChanged)
+            },
+            new ValidateValueCallback(ValidateCurrentIconground)
+        );
+
+        private static void CurrentIcongroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            TileMenuItem uc = (TileMenuItem)d;
+            Path path = uc.itemIcon;
+            path.Fill = (Brush)e.NewValue;
+        }
+
+        private static bool ValidateCurrentIconground(object value)
+        {
+            return value is Brush;
+        }
+
         /// <summary>
         /// The width of image displayed by the button.
         /// </summary>
@@ -49,11 +74,11 @@ namespace MyCathedra.Controls.Tile
         {
             get
             {
-                return itemIcon.Fill;
+                return (Brush)GetValue(IcongroundProperty);
             }
             set
             {
-                itemIcon.Fill = value;
+                SetValue(IcongroundProperty, value);
             }
         }
 
