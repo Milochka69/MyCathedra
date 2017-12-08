@@ -1,5 +1,28 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:MyCathedra.Controls.Dictionary">
+
+    <!--Brushes-->
+    <SolidColorBrush x:Key="ApplicationIconground" Color="{DynamicResource BorderColor}"/> 
+
+    <!--Foreground color-->
+    <Color x:Key="ApplicationForeground">#FF363636</Color>
+    <Color x:Key="ApplicationForegroundInverse">#FFFFFFFFF</Color>
+
+    <!--Control colors.-->
+    <Color x:Key="ControlColor">#FFFFFFFF</Color>
     
+    <Color x:Key="DisabledControlColor">#FFE8EDF9</Color>
+    <Color x:Key="DisabledForegroundColor">#FF888888</Color>
+
+    <Color x:Key="ControlMouseOverColor">#FFEDEEF0</Color>
+    <Color x:Key="ControlPressedColor">#FFEDEEF0</Color>
+
+    <!--Border colors-->
+    <Color x:Key="BorderColor">#FF2A5885</Color>
+    
+    <Color x:Key="DisabledBorderColor">#FFAAAAAA</Color>
+
+    <Color x:Key="PressedBorderColor">#FF3D6898</Color>
+
 </ResourceDictionary>
