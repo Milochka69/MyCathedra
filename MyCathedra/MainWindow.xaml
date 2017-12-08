@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyCathedra"
         x:Class="MyCathedra.MainWindow"
         mc:Ignorable="d"
-        Title="{Binding ElementName=mainFrame, Path=Content.Title}" Height="700" Width="1024" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+        Title="{Binding ElementName=mainFrame, Path=Content.Title, StringFormat='Дипломная работа: {0}'}" Height="700" Width="1024" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Background="#FFEDEEF0">
 
     <DockPanel Name="navigationPanel">
         <Frame Name="mainFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{DynamicResource {x:Type Frame}}"/>

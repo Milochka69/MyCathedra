@@ -57,7 +57,7 @@
         </Storyboard>
     </Button.Resources>
     <Button.Effect>
-        <DropShadowEffect Direction="270" Opacity="0.1" RenderingBias="Quality" ShadowDepth="0"/>
+        <DropShadowEffect Direction="270" Opacity="0.1" RenderingBias="Quality" ShadowDepth="0" Color="#FFD7D8DB"/>
     </Button.Effect>
     <Button.Triggers>
         <EventTrigger RoutedEvent="UIElement.MouseEnter">
@@ -70,7 +70,7 @@
     <Grid x:Name="itemGrid">
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition x:Name="rowSpace" Height="8"/>
+            <RowDefinition x:Name="rowSpace" Height="4"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Path x:Name="itemIcon" Stretch="Uniform" Width="40"  Height="40" Opacity="0.8" Fill="{Binding Iconground, ElementName=tileMenuItem}" HorizontalAlignment="{Binding HorizontalContentAlignment, ElementName=tileMenuItem}" VerticalAlignment="Bottom"/>

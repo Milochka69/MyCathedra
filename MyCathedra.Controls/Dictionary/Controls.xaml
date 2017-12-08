@@ -2,26 +2,25 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:MyCathedra.Controls.Dictionary"
                     xmlns:Utils="clr-namespace:MyCathedra.Controls.Utils"
-                    xmlns:Common="clr-namespace:MyCathedra.Controls.Common">
+                    xmlns:Common="clr-namespace:MyCathedra.Controls.Common" 
+                    xmlns:Tile="clr-namespace:MyCathedra.Controls.Tile">
 
     <Utils:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    
-    <Style TargetType="Frame" x:Key="{x:Type Frame}">
+
+    <Style TargetType="{x:Type Frame}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Frame">
+                <ControlTemplate TargetType="{x:Type Frame}">
                     <DockPanel>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="4">
-                            <Button Command="{x:Static NavigationCommands.BrowseBack}" Visibility="{TemplateBinding CanGoBack, Converter={StaticResource BooleanToVisibilityConverter}}" Width="48" Height="24">
+                            <Button x:Name="BackButton" Command="{x:Static NavigationCommands.BrowseBack}" Visibility="{TemplateBinding CanGoBack, Converter={StaticResource BooleanToVisibilityConverter}}" Width="48" Height="24" Foreground="#FF444444">
                                 <Path Margin="2"
                                     Data="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
-                                    Fill="#444"
-                                    Stretch="Uniform" />  
+                                    Fill="{Binding Foreground, ElementName=BackButton}"
+                                    Stretch="Uniform" />
                             </Button>
-                            
-                            <ItemsControl Margin="4,0" ItemsSource="{Binding 
-                                RelativeSource={RelativeSource TemplatedParent}, 
-                                Path=BackStack}" VerticalContentAlignment="Center">
+
+                            <ItemsControl Margin="4,0" ItemsSource="{Binding BackStack, RelativeSource={RelativeSource TemplatedParent}}" VerticalContentAlignment="Center">
 
                                 <!--Force the ItemsContol to use a wrap panel as Items host-->
                                 <ItemsControl.ItemsPanel>
@@ -37,10 +36,10 @@
                                             CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
                                             Content="{Binding Name}">
                                             <Button.Template>
-                                                <ControlTemplate TargetType="Button">
+                                                <ControlTemplate TargetType="{x:Type Button}">
                                                     <WrapPanel>
-                                                        <TextBlock Name="text2" FontWeight="Bold" Text="»"/>
-                                                        <TextBlock Name="text1" FontWeight="Bold" Text="{TemplateBinding Content}" Margin="2,0"/>
+                                                        <TextBlock x:Name="text2" FontWeight="Bold" Text="»"/>
+                                                        <TextBlock x:Name="text1" FontWeight="Bold" Text="{TemplateBinding Content}" Margin="2,0"/>
                                                     </WrapPanel>
                                                     <ControlTemplate.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
@@ -55,11 +54,155 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </StackPanel>
-                        
+
                         <AdornerDecorator>
-                            <ContentPresenter Name="PART_NavWinCP" ClipToBounds="true"/>
+                            <ContentPresenter x:Name="PART_NavWinCP" ClipToBounds="true"/>
                         </AdornerDecorator>
                     </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border>
+                        <Rectangle 
+                            Margin="2"
+                            StrokeThickness="1"
+                            Stroke="#60000000"
+                            StrokeDashArray="1 2" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="DefaultButton">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Foreground" Value="{DynamicResource ApplicationForeground}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
+        <Setter Property="MinHeight" Value="23" />
+        <Setter Property="MinWidth" Value="75" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border" TextBlock.Foreground="{TemplateBinding Foreground}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Border.BorderBrush>
+                            <SolidColorBrush x:Name="ControlBorderBrush" Color="{DynamicResource BorderColor}" />
+                        </Border.BorderBrush>
+                        <Border.Background>
+                            <SolidColorBrush x:Name="ControlBackground" Color="{DynamicResource ControlColor}" />
+                        </Border.Background>
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.3" />
+                                    <VisualTransition GeneratedDuration="0" To="MouseOver"/>
+                                    <VisualTransition GeneratedDuration="0" To="Pressed"/>
+                                    <VisualTransition GeneratedDuration="0" To="Disabled"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="ControlBorderBrush" Storyboard.TargetProperty="Color">
+                                            <EasingColorKeyFrame KeyTime="0:0:0.3" Value="{StaticResource PressedBorderColor}">
+                                                <EasingColorKeyFrame.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </EasingColorKeyFrame.EasingFunction>
+                                            </EasingColorKeyFrame>
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="ControlBackground" Storyboard.TargetProperty="Color">
+                                            <EasingColorKeyFrame KeyTime="0:0:0.3" Value="{StaticResource ControlPressedColor}">
+                                                <EasingColorKeyFrame.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </EasingColorKeyFrame.EasingFunction>
+                                            </EasingColorKeyFrame>
+                                        </ColorAnimationUsingKeyFrames>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="ControlBorderBrush" Storyboard.TargetProperty="Color">
+                                            <EasingColorKeyFrame KeyTime="0:0:0.3" Value="{StaticResource PressedBorderColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="ControlBackground" Storyboard.TargetProperty="Color">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledControlColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="ControlBorderBrush" Storyboard.TargetProperty="Color">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledBorderColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <ContentPresenter
+                            Margin="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefault" Value="true">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource DefaultBorderBrushLBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="TileMenuItem" TargetType="{x:Type Tile:TileMenuItem}" BasedOn="{StaticResource DefaultButton}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
+        <Setter Property="Background" Value="#FFDDDDDD"/>
+        <Setter Property="BorderBrush" Value="#FF707070"/>
+        <Setter Property="Foreground" Value="{DynamicResource ApplicationForeground}"/>
+        <Setter Property="Iconground" Value="{DynamicResource ApplicationIconground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Tile:TileMenuItem}">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted" Value="True">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                        </Trigger>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                            <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
