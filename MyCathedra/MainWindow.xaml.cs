@@ -1,5 +1,4 @@
-﻿using MyCathedra.Pages;
-using System.Windows;
+﻿using System.Windows;
 
 namespace MyCathedra
 {
@@ -15,7 +14,12 @@ namespace MyCathedra
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            mainFrame.Navigate(new MainPage());
+            //mainFrame.Navigate();
+        }
+
+        private void TileMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

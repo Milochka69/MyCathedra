@@ -5,25 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MyCathedra.Controls.Tile"
              xmlns:Utils="clr-namespace:MyCathedra.Controls.Utils" x:Name="tileMenuItem" x:Class="MyCathedra.Controls.Tile.TileMenuItem"
-             mc:Ignorable="d" d:DesignWidth="200" Height="190" Padding="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch">
-    
+             mc:Ignorable="d" d:DesignWidth="200" Height="50" Padding="5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center">
+
     <Button.Resources>
         <Utils:HorizontalToTextAlignmentConverter x:Key="HorizontalToTextAlignmentConverter"/>
         <Storyboard x:Key="OnHover">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)" Storyboard.TargetName="tileMenuItem">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="2">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CubicEase EasingMode="EaseOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Opacity)" Storyboard.TargetName="tileMenuItem">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0.3">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CubicEase EasingMode="EaseOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="itemIcon">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -31,34 +17,19 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)" Storyboard.TargetName="tileMenuItem">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="10"/>
-            </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="rowSpace">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="4"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="OnLeave">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)" Storyboard.TargetName="tileMenuItem">
-                <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Opacity)" Storyboard.TargetName="tileMenuItem">
-                <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0.1"/>
-            </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="itemIcon">
                 <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0.8"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)" Storyboard.TargetName="tileMenuItem">
-                <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="5"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="rowSpace">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="8"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Button.Resources>
-    <Button.Effect>
-        <DropShadowEffect Direction="270" Opacity="0.1" RenderingBias="Quality" ShadowDepth="0" Color="#FFD7D8DB"/>
-    </Button.Effect>
     <Button.Triggers>
         <EventTrigger RoutedEvent="UIElement.MouseEnter">
             <BeginStoryboard x:Name="OnHover_BeginStoryboard" Storyboard="{StaticResource OnHover}"/>
@@ -68,15 +39,12 @@
         </EventTrigger>
     </Button.Triggers>
     <Grid x:Name="itemGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition x:Name="rowSpace" Height="4"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Path x:Name="itemIcon" Stretch="Uniform" Width="40"  Height="40" Opacity="0.8" Fill="{Binding Iconground, ElementName=tileMenuItem}" HorizontalAlignment="{Binding HorizontalContentAlignment, ElementName=tileMenuItem}" VerticalAlignment="Bottom"/>
-        <StackPanel Grid.Row="2" Margin="{Binding Padding, ElementName=tileMenuItem}">
-            <TextBlock x:Name="itemLabel"  TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Foreground="{Binding Foreground, ElementName=tileMenuItem}" FontFamily="{Binding FontFamily, ElementName=tileMenuItem}" FontSize="{Binding FontSize, ElementName=tileMenuItem}" FontWeight="{Binding FontWeight, ElementName=tileMenuItem}" FontStyle="{Binding FontStyle, ElementName=tileMenuItem}" HorizontalAlignment="{Binding HorizontalContentAlignment, ElementName=tileMenuItem}" VerticalAlignment="{Binding VerticalAlignment, ElementName=tileMenuItem}" TextAlignment="{Binding HorizontalContentAlignment, Converter={StaticResource HorizontalToTextAlignmentConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TileMenuItem}}}"/>
-            <TextBlock x:Name="itemHint"  TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Foreground="{Binding Foreground, ElementName=tileMenuItem}" FontFamily="{Binding FontFamily, ElementName=tileMenuItem}" FontSize="{Binding FontSize, ElementName=tileMenuItem}" FontWeight="{Binding FontWeight, ElementName=tileMenuItem}" FontStyle="{Binding FontStyle, ElementName=tileMenuItem}" HorizontalAlignment="{Binding HorizontalContentAlignment, ElementName=tileMenuItem}" VerticalAlignment="{Binding VerticalAlignment, ElementName=tileMenuItem}" TextAlignment="{Binding HorizontalContentAlignment, Converter={StaticResource HorizontalToTextAlignmentConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TileMenuItem}}}" Opacity="0.7"/>
-        </StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding Height, ElementName=tileMenuItem}"/>
+            <ColumnDefinition x:Name="rowSpace" Width="4"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Path x:Name="itemIcon" Stretch="Uniform" Opacity="0.8" Fill="{Binding Iconground, ElementName=tileMenuItem}" Margin="{Binding Padding, ElementName=tileMenuItem}"/>
+        <TextBlock x:Name="itemLabel" Grid.Column="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"  Margin="{Binding Padding, ElementName=tileMenuItem}" Foreground="{Binding Foreground, ElementName=tileMenuItem}" FontFamily="{Binding FontFamily, ElementName=tileMenuItem}" FontSize="{Binding FontSize, ElementName=tileMenuItem}" FontWeight="{Binding FontWeight, ElementName=tileMenuItem}" FontStyle="{Binding FontStyle, ElementName=tileMenuItem}" HorizontalAlignment="{Binding HorizontalContentAlignment, ElementName=tileMenuItem}" VerticalAlignment="{Binding VerticalContentAlignment, ElementName=tileMenuItem}" TextAlignment="{Binding HorizontalContentAlignment, Converter={StaticResource HorizontalToTextAlignmentConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TileMenuItem}}}"/>
     </Grid>
 </Button>

@@ -36,37 +36,6 @@ namespace MyCathedra.Controls.Tile
         }
 
         /// <summary>
-        /// The width of image displayed by the button.
-        /// </summary>
-        [Description("The width of image displayed by the button."), Category("Макет")]
-        public double IconWidth
-        {
-            get
-            {
-                return itemIcon.Width;
-            }
-            set
-            {
-                itemIcon.Width = value;
-            }
-        }
-        /// <summary>
-        /// The height of image displayed by the button.
-        /// </summary>
-        [Description("The height of image displayed by the button."), Category("Макет")]
-        public double IconHeight
-        {
-            get
-            {
-                return itemIcon.Height;
-            }
-            set
-            {
-                itemIcon.Height = value;
-            }
-        }
-
-        /// <summary>
         /// The color of image displayed by the button.
         /// </summary>
         [Description("The color of image displayed by the button."), Category("Кисть")]
@@ -112,22 +81,6 @@ namespace MyCathedra.Controls.Tile
             set
             {
                 itemLabel.Text = value;
-            }
-        }
-
-        /// <summary>
-        /// The hint text displayed by the button.
-        /// </summary>
-        [Description("Short explanations."), Category("Appearance")]
-        public String Hint
-        {
-            get
-            {
-                return itemHint.Text;
-            }
-            set
-            {
-                itemHint.Text = value;
             }
         }
 
