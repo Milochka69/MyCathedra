@@ -1,24 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MyCathedra.DatabaseManager.Model
 {
+    [Table("EMPLOYEE")]
     class Employee
     {
-        public int id { get; set; }
-        public string fio { get; set; }
-        public byte[] bio { get; set; }
-        public string bio_type { get; set; }
-        public byte[] info { get; set; }
-        public string info_type { get; set; }
-        public byte[] photo { get; set; }
-        public bool is_teatcher { get; set; }
-        public bool is_inner { get; set; }
-        public bool is_active { get; set; }
+        [Key]
+        [Column("ID")]
+        public int Id { get; set; }
 
-        public ICollection<RefDocument> documents { get; set; }
+        [Column("FIO")]
+        public string Fio { get; set; }
+
+        [Column("BIO")]
+        public byte[] Bio { get; set; }
+
+        [Column("BIO_TYPE")]
+        public string BioType { get; set; }
+
+        [Column("INFO")]
+        public byte[] Info { get; set; }
+
+        [Column("INFO_TYPE")]
+        public string InfoType { get; set; }
+
+        [Column("PHOTO")]
+        public byte[] Photo { get; set; }
+
+        [Column("IS_TEACHER")]
+        public bool IsTeatcher { get; set; }
+
+        [Column("IS_INNER")]
+        public bool IsInner { get; set; }
+
+        [Column("IS_ACTIVE")]
+        public bool IsActive { get; set; }
+
+        public ICollection<RefDocument> Documents { get; set; }
     }
 }
