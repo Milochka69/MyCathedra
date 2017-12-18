@@ -48,7 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Employee.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefDocument.cs" />
+    <Compile Include="RefDocumentCategory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
