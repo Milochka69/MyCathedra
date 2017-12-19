@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyCathedra.DatabaseManager.Model
 {
     [Table("REF_DOCUMENT")]
-    class RefDocument
+    public class RefDocument
     {
-        public RefDocument() { }
-
         [Key]
         [Column("ID")]
         public int Id { get; set; }
@@ -27,15 +21,19 @@ namespace MyCathedra.DatabaseManager.Model
         public int Year { get; set; }
 
         [Column("CATEGORY_ID")]
-        public RefDocumentCategory Category { get; set; }
+        public int CategoryId { get; set; }
 
         [Column("AUTOR_ID")]
-        public Employee Author { get; set; }
+        public int AuthorId { get; set; }
 
         [Column("CREATE_DATE")]
         public DateTime? CreateDate { get; set; }
 
         [Column("IS_ACTIVE")]
         public bool IsActive { get; set; }
+
+        public virtual Employee Author { get; set; }
+
+        public virtual RefDocumentCategory Category { get; set; }
     }
 }

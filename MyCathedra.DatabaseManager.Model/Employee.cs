@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyCathedra.DatabaseManager.Model
 {
     [Table("EMPLOYEE")]
-    class Employee
+    public class Employee
     {
+        public Employee() {
+            this.Documents = new ObservableCollection<RefDocument>();
+        }
+
         [Key]
         [Column("ID")]
         public int Id { get; set; }
@@ -42,6 +43,6 @@ namespace MyCathedra.DatabaseManager.Model
         [Column("IS_ACTIVE")]
         public bool IsActive { get; set; }
 
-        public ICollection<RefDocument> Documents { get; set; }
+        public virtual ObservableCollection<RefDocument> Documents { get; private set; }
     }
 }

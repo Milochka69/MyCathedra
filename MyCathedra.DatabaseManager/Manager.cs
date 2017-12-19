@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using MyCathedra.DatabaseManager.Model;
+using System.Data.Entity;
 
 namespace MyCathedra.DatabaseManager
 {
@@ -10,6 +11,10 @@ namespace MyCathedra.DatabaseManager
             using (Manager db = new Manager())
                 db.Database.Initialize(false);
         }
+
+        public DbSet<RefDocumentCategory> RefDocumentCategories { get; set; }
+        public DbSet<RefDocument> RefDocuments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 
     class DbInitializer : DropCreateDatabaseAlways<Manager>
