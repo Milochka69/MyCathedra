@@ -1,7 +1,4 @@
-﻿using MyCathedra.DatabaseManager;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Controls;
 
 namespace MyCathedra.Pages.Administrating
@@ -11,10 +8,11 @@ namespace MyCathedra.Pages.Administrating
     /// </summary>
     public partial class RefDocumentCategoryPage : Page
     {
-        public RefDocumentCategoryPage(Manager manager)
+        public RefDocumentCategoryPage(FileManager.FileManager fileManager, string directory)
         {
             InitializeComponent();
-            _CategoriesGrid.ItemsSource = manager.RefDocumentCategories;
+            _CategoriesGrid.ItemsSource = fileManager.GetChildrenDirectories(directory)
+                .Select(d => new {Name = d});
         }
     }
 }

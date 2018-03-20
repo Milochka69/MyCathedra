@@ -1,11 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:MyCathedra.Controls.Dictionary"
-                    xmlns:Utils="clr-namespace:MyCathedra.Controls.Utils"
-                    xmlns:Common="clr-namespace:MyCathedra.Controls.Common" 
-                    xmlns:Tile="clr-namespace:MyCathedra.Controls.Tile">
+                    xmlns:utils="clr-namespace:MyCathedra.Controls.Utils"
+                    xmlns:tile="clr-namespace:MyCathedra.Controls.Tile">
 
-    <Utils:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <utils:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
     <Style TargetType="{x:Type Frame}">
         <Setter Property="Template">
@@ -122,7 +120,7 @@
     </Style>
 
 
-    <Style x:Key="TileMenuItem" TargetType="{x:Type Tile:TileMenuItem}" BasedOn="{StaticResource DefaultButton}">
+    <Style x:Key="TileMenuItem" TargetType="{x:Type tile:TileMenuItem}" BasedOn="{StaticResource DefaultButton}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
         <Setter Property="Background" Value="#FFDDDDDD"/>
         <Setter Property="BorderBrush" Value="#FF707070"/>
@@ -134,7 +132,7 @@
         <Setter Property="Padding" Value="1"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Tile:TileMenuItem}">
+                <ControlTemplate TargetType="{x:Type tile:TileMenuItem}">
                     <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                         <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
