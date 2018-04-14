@@ -3,11 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Tile="clr-namespace:MyCathedra.Controls.Tile;assembly=MyCathedra.Controls"
+    xmlns:tile="clr-namespace:MyCathedra.Controls.Tile;assembly=MyCathedra.Controls"
     x:Class="MyCathedra.MainWindow"
     mc:Ignorable="d"
-    Title="{Binding Content.Title, ElementName=MainFrame, StringFormat=Дипломная работа: \{0\}}" Height="700"
-    Width="1024" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Background="#FFEDEEF0">
+    Title="lol"
+    Width="1024" WindowStartupLocation="CenterScreen" Background="#FFEDEEF0">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -18,10 +18,40 @@
                       Grid.Column="0">
             <StackPanel Name="BasePanal" />
         </ScrollViewer>
-        <DockPanel x:Name="NavigationPanel" Grid.Column="1">
-            <Frame x:Name="MainFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                   Style="{DynamicResource {x:Type Frame}}" />
-        </DockPanel>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <ToolBar Grid.Row="0">
+                <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Margin="8" Stretch="Uniform" Fill="Black" />
+                </Button>
+                <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    <Path
+                        Data="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                        Margin="8" Stretch="Uniform" Fill="Black" />
+                </Button>
+                <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    <Path Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                          Margin="8" Stretch="Uniform" Fill="Black" />
+                </Button>
+
+                <TextBox Height="30" Width="300" />
+            </ToolBar>
+            <DataGrid Grid.Row="1" x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Путь" Binding="{Binding Path}" />
+                    <DataGridTextColumn Header="Дата изменения" Binding="{Binding UpdateUtc}" />
+                </DataGrid.Columns>
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridRow">
+                        <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick" />
+                    </Style>
+                </DataGrid.Resources>
+            </DataGrid>
+        </Grid>
     </Grid>
 
 </Window>

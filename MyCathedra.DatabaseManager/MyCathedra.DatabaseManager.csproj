@@ -63,12 +63,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyCathedra.DatabaseManager.Model\MyCathedra.DatabaseManager.Model.csproj">
-      <Project>{75190f98-9fb6-4f56-b7fa-03f815e853a3}</Project>
-      <Name>MyCathedra.DatabaseManager.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
