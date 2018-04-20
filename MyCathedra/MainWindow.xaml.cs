@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using MyCathedra.Controls.Tile;
+using MyCathedra.FileManager;
 
 namespace MyCathedra
 {
@@ -84,7 +85,9 @@ namespace MyCathedra
 
         private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
         {
-//            throw new System.NotImplementedException();
+            var row = sender as DataGridRow;
+            if (!(row?.Item is FileInfo rowItem)) return;
+            if (rowItem.IsFle) _fileManager.OpenFile(rowItem);
         }
     }
 }

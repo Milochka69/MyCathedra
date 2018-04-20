@@ -49,28 +49,33 @@ namespace MyCathedra.FileManager
             return Directory.GetDirectories(BaseFolder).Select(ParsePath);
         }
 
-        public IEnumerable<FoldetInfo> GetChildrenDirectories(string basePath)
+        public IEnumerable<FileInfo> GetChildrenDirectories(string basePath)
         {
-            return Directory.GetDirectories(GetPath(basePath)).Select(
-                p => new FoldetInfo
+            var path = GetPath(basePath);
+            return Directory.GetDirectories(path)
+                .Select(p => new FileInfo
                 {
                     Name = ParsePath(p),
                     Path = p,
-                    UpdateUtc = Directory.GetLastWriteTimeUtc(p)
-                });
+                    UpdateUtc = Directory.GetLastWriteTimeUtc(p),
+                    IsFle = false
+                })
+                .Union(Directory.GetFiles(path)
+                    .Select(p => new FileInfo
+                    {
+                        Name = ParsePath(p),
+                        Path = p,
+                        UpdateUtc = Directory.GetLastWriteTimeUtc(p),
+                        IsFle = true
+                    }));
         }
-//
-//        public IEnumerable<FoldetInfo> Search(string text, string path)
-//        {
-//            var result = new List<FoldetInfo>();
-//            Directory.GetDirectories(GetPath(path));
-//            return result;
-//        }
-//
-//        private void r(string path)
-//        {
-//            
-//        }
+
+        public bool OpenFile(FileInfo file)
+        {
+            if (!file.IsFle) return false;
+            System.Diagnostics.Process.Start(file.Path);
+            return true;
+        }
 
         private string GetPath(string folder)
         {
@@ -84,10 +89,11 @@ namespace MyCathedra.FileManager
         }
     }
 
-    public class FoldetInfo
+    public class FileInfo
     {
         public string Name { get; set; }
         public DateTime UpdateUtc { get; set; }
         public string Path { get; set; }
+        public bool IsFle { get; set; }
     }
 }
