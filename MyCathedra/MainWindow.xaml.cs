@@ -88,6 +88,7 @@ namespace MyCathedra
             var row = sender as DataGridRow;
             if (!(row?.Item is FileInfo rowItem)) return;
             if (rowItem.IsFle) _fileManager.OpenFile(rowItem);
+            else DataGrid.ItemsSource = _fileManager.GetChildrenDirectories(rowItem.Path);
         }
     }
 }

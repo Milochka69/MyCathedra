@@ -56,7 +56,7 @@ namespace MyCathedra.FileManager
                 .Select(p => new FileInfo
                 {
                     Name = ParsePath(p),
-                    Path = p,
+                    Path = NormalPath(p),
                     UpdateUtc = Directory.GetLastWriteTimeUtc(p),
                     IsFle = false
                 })
@@ -64,7 +64,7 @@ namespace MyCathedra.FileManager
                     .Select(p => new FileInfo
                     {
                         Name = ParsePath(p),
-                        Path = p,
+                        Path = NormalPath(p),
                         UpdateUtc = Directory.GetLastWriteTimeUtc(p),
                         IsFle = true
                     }));
@@ -73,13 +73,19 @@ namespace MyCathedra.FileManager
         public bool OpenFile(FileInfo file)
         {
             if (!file.IsFle) return false;
-            System.Diagnostics.Process.Start(file.Path);
+            var fileName = GetPath(file.Path);
+            System.Diagnostics.Process.Start(fileName);
             return true;
         }
 
         private string GetPath(string folder)
         {
             return $"{BaseFolder}/{folder}";
+        }
+
+        private string NormalPath(string path)
+        {
+            return path.Replace(BaseFolder, string.Empty).Remove(0, 1);
         }
 
         private string ParsePath(string path)
