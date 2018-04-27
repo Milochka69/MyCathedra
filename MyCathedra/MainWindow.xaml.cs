@@ -13,6 +13,19 @@ namespace MyCathedra
         private readonly FileManager.FileManager _fileManager;
         private readonly IList<Expander> _expanders;
 
+        private string _currentPath;
+
+        private string TitlePath
+        {
+            get => _currentPath;
+            set
+            {
+                Title = $"Путь: {value}".Replace('\\', '/');
+                _currentPath = value;
+            }
+        }
+
+
         public MainWindow()
         {
             _fileManager = new FileManager.FileManager();
@@ -27,7 +40,7 @@ namespace MyCathedra
             foreach (var directory in directories)
             {
                 var stackPanel = new StackPanel {Background = new BrushConverter().ConvertFrom("#FFE5E5E5") as Brush};
-                foreach (var directoryChildren in _fileManager.GetChildrenDirectories(directory))
+                foreach (var directoryChildren in _fileManager.GetChildren(directory))
                 {
                     var item = new TileMenuItem
                     {
@@ -80,15 +93,46 @@ namespace MyCathedra
             var stackPanel = tileMenuItem?.Parent as StackPanel;
             var expander = stackPanel?.Parent as Expander;
             var header = expander?.Header.ToString();
-            DataGrid.ItemsSource = _fileManager.GetChildrenDirectories($"{header}/{tileMenuItem?.Text}");
+            var path = $"{header}/{tileMenuItem?.Text}";
+            TitlePath = path;
+            DataGrid.ItemsSource = _fileManager.GetChildren(path);
         }
 
         private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             var row = sender as DataGridRow;
             if (!(row?.Item is FileInfo rowItem)) return;
-            if (rowItem.IsFle) _fileManager.OpenFile(rowItem);
-            else DataGrid.ItemsSource = _fileManager.GetChildrenDirectories(rowItem.Path);
+
+            if (rowItem.IsFle)
+            {
+                _fileManager.OpenFile(rowItem);
+            }
+            else
+            {
+                TitlePath = rowItem.Path;
+                DataGrid.ItemsSource = _fileManager.GetChildren(rowItem.Path);
+            }
+        }
+
+        private void Back(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TitlePath)) return;
+
+            var path = _fileManager.GetParentPath(TitlePath);
+            if (string.IsNullOrWhiteSpace(path)) return;
+            TitlePath = path;
+            DataGrid.ItemsSource = _fileManager.GetChildren(path);
+        }
+
+        private void Rename(object sender, RoutedEventArgs e)
+        {
+            if (!(DataGrid.CurrentItem is FileInfo fileInfo)) return;
+
+            var inputBox = new InputBox("Переименовать?", fileInfo.Name);
+            if (inputBox.ShowDialog() == true)
+            {
+                _fileManager.Move(fileInfo, inputBox.Answer);
+            }
         }
     }
 }

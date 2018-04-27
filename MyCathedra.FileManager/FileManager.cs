@@ -49,9 +49,20 @@ namespace MyCathedra.FileManager
             return Directory.GetDirectories(BaseFolder).Select(ParsePath);
         }
 
-        public IEnumerable<FileInfo> GetChildrenDirectories(string basePath)
+        public string GetParentPath(string path)
         {
-            var path = GetPath(basePath);
+            var i = path.LastIndexOf('\\');
+            return i < 0 ? null : path.Remove(i);
+        }
+
+        public IEnumerable<FileInfo> GetChildren(string path)
+        {
+            path = GetPath(path);
+            return FileInfos(path);
+        }
+
+        private IEnumerable<FileInfo> FileInfos(string path)
+        {
             return Directory.GetDirectories(path)
                 .Select(p => new FileInfo
                 {
@@ -75,6 +86,16 @@ namespace MyCathedra.FileManager
             if (!file.IsFle) return false;
             var fileName = GetPath(file.Path);
             System.Diagnostics.Process.Start(fileName);
+            return true;
+        }
+
+        public bool Move(FileInfo file, string newName)
+        {
+            var path = GetPath(file.Path);
+
+            if (file.IsFle) File.Move(path, newName);
+            else Directory.Move(path, newName);
+            
             return true;
         }
 
