@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Microsoft.Win32;
 using MyCathedra.Controls.Tile;
-using MyCathedra.FileManager;
+using FileInfo = MyCathedra.FileManager.FileInfo;
 
 namespace MyCathedra
 {
@@ -114,6 +116,26 @@ namespace MyCathedra
             }
         }
 
+        private void Add(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TitlePath)) return;
+
+            var fileDialog = new OpenFileDialog
+            {
+                InitialDirectory = "c:\\",
+                Multiselect = false,
+                Filter = "file |*.doc;*.xls;*.ppt;*.txt;*.pdf",
+                RestoreDirectory = true
+            };
+
+            var showDialog = fileDialog.ShowDialog();
+            if (showDialog == null || !showDialog.Value) return;
+
+            var file = fileDialog.FileName;
+            _fileManager.AddFile(file, TitlePath);
+            DataGridUpdate();
+        }
+
         private void Back(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitlePath)) return;
@@ -129,10 +151,32 @@ namespace MyCathedra
             if (!(DataGrid.CurrentItem is FileInfo fileInfo)) return;
 
             var inputBox = new InputBox("Переименовать?", fileInfo.Name);
-            if (inputBox.ShowDialog() == true)
+            if (inputBox.ShowDialog() != true) return;
+
+            _fileManager.Move(fileInfo, inputBox.Answer);
+
+            DataGridUpdate();
+        }
+
+        private void DataGrid_Drop(object sender, DragEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TitlePath)) return;
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
+
+            var files = (string[]) e.Data.GetData(DataFormats.FileDrop);
+            if (files == null || !files.Any()) return;
+
+            foreach (var file in files)
             {
-                _fileManager.Move(fileInfo, inputBox.Answer);
+                _fileManager.AddFile(file, TitlePath);
             }
+
+            DataGridUpdate();
+        }
+
+        private void DataGridUpdate()
+        {
+            DataGrid.ItemsSource = _fileManager.GetChildren(TitlePath);
         }
     }
 }

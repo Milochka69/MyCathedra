@@ -95,8 +95,15 @@ namespace MyCathedra.FileManager
 
             if (file.IsFle) File.Move(path, newName);
             else Directory.Move(path, newName);
-            
+
             return true;
+        }
+
+        public void AddFile(string sourceFileName, string destFileName)
+        {
+            var fileName = ParsePath(sourceFileName);
+            destFileName += $"/{fileName}";
+            File.Copy(sourceFileName, GetPath(destFileName));
         }
 
         private string GetPath(string folder)
