@@ -7,10 +7,9 @@
     mc:Ignorable="d"
     Title="Путь"
     Width="1024" WindowStartupLocation="CenterScreen" Background="#FFEDEEF0">
-
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="275" />
+            <ColumnDefinition Width="300" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Background="#FFE3E4E6"
@@ -24,7 +23,16 @@
             </Grid.RowDefinitions>
             <ToolBar Grid.Row="0">
                 <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                        Content="Back" Click="Back" />
+                        Click="Back">
+                    <Path Data="M20,10V14H11L14.5,17.5L12.08,19.92L4.16,12L12.08,4.08L14.5,6.5L11,10H20Z" Margin="8"
+                          Stretch="Uniform" Fill="Black" />
+                </Button>
+                <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                        Click="CreateFolder">
+                    <Path
+                        Data="M10,4L12,6H20A2,2 0 0,1 22,8V18A2,2 0 0,1 20,20H4C2.89,20 2,19.1 2,18V6C2,4.89 2.89,4 4,4H10M15,9V12H12V14H15V17H17V14H20V12H17V9H15Z"
+                        Margin="8" Stretch="Uniform" Fill="Black" />
+                </Button>
                 <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         Click="Add">
                     <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Margin="8" Stretch="Uniform" Fill="Black" />
@@ -35,25 +43,32 @@
                         Data="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
                         Margin="8" Stretch="Uniform" Fill="Black" />
                 </Button>
-                <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                        Click="Delete">
                     <Path Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
                           Margin="8" Stretch="Uniform" Fill="Black" />
                 </Button>
 
-                <TextBox Height="30" Width="300" />
+                <Path
+                    Data="M12,16C12.56,16.84 13.31,17.53 14.2,18L12,20.2L9.8,18C10.69,17.53 11.45,16.84 12,16M17,11.2A2,2 0 0,0 15,13.2A2,2 0 0,0 17,15.2A2,2 0 0,0 19,13.2C19,12.09 18.1,11.2 17,11.2M7,11.2A2,2 0 0,0 5,13.2A2,2 0 0,0 7,15.2A2,2 0 0,0 9,13.2C9,12.09 8.1,11.2 7,11.2M17,8.7A4,4 0 0,1 21,12.7A4,4 0 0,1 17,16.7A4,4 0 0,1 13,12.7A4,4 0 0,1 17,8.7M7,8.7A4,4 0 0,1 11,12.7A4,4 0 0,1 7,16.7A4,4 0 0,1 3,12.7A4,4 0 0,1 7,8.7M2.24,1C4,4.7 2.73,7.46 1.55,10.2C1.19,11 1,11.83 1,12.7A6,6 0 0,0 7,18.7C7.21,18.69 7.42,18.68 7.63,18.65L10.59,21.61L12,23L13.41,21.61L16.37,18.65C16.58,18.68 16.79,18.69 17,18.7A6,6 0 0,0 23,12.7C23,11.83 22.81,11 22.45,10.2C21.27,7.46 20,4.7 21.76,1C19.12,3.06 15.36,4.69 12,4.7C8.64,4.69 4.88,3.06 2.24,1Z"
+                    Margin="8" Stretch="Uniform" Fill="Black" />
+                <TextBox Height="30" Width="300" HorizontalAlignment="Right" />
             </ToolBar>
             <DataGrid Grid.Row="1" x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True"
-                      AllowDrop="True" Drop="DataGrid_Drop">
+                      AllowDrop="True" Drop="DataGrid_Drop" SelectionMode="Single">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="Путь" Binding="{Binding Path}" />
-                    <DataGridTextColumn Header="Дата изменения" Binding="{Binding UpdateUtc}" />
+                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="450"/>
+                    <!-- <DataGridTextColumn Header="Путь" Binding="{Binding Path}" /> -->
+                    <DataGridTextColumn Header="Дата изменения" Binding="{Binding UpdateUtc}" Width="160" />
                 </DataGrid.Columns>
                 <DataGrid.Resources>
                     <Style TargetType="DataGridRow">
                         <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick" />
+                        <Setter Property="FontSize" Value="14" />
                     </Style>
                 </DataGrid.Resources>
+
+
             </DataGrid>
         </Grid>
     </Grid>
