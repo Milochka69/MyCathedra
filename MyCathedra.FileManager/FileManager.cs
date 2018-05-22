@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace MyCathedra.FileManager
 {
@@ -88,39 +89,13 @@ namespace MyCathedra.FileManager
 
         public IEnumerable<string> GetBaseDirectories()
         {
-            return Directory.GetDirectories(BaseFolder).Select(ParsePath);
+            return Directory.GetDirectories(BaseFolder).Select(ParsePath).OrderBy(f => f);
         }
 
         public string GetParentPath(string path)
         {
             var i = path.LastIndexOf('\\');
             return i < 0 ? null : path.Remove(i);
-        }
-
-        public IEnumerable<FileInfo> GetChildren(string path)
-        {
-            path = GetPath(path);
-            return FileInfos(path);
-        }
-
-        private IEnumerable<FileInfo> FileInfos(string path)
-        {
-            return Directory.GetDirectories(path)
-                .Select(p => new FileInfo
-                {
-                    Name = ParsePath(p),
-                    Path = NormalPath(p),
-                    UpdateUtc = Directory.GetLastWriteTimeUtc(p),
-                    IsFle = false
-                })
-                .Union(Directory.GetFiles(path)
-                    .Select(p => new FileInfo
-                    {
-                        Name = ParsePath(p),
-                        Path = NormalPath(p),
-                        UpdateUtc = Directory.GetLastWriteTimeUtc(p),
-                        IsFle = true
-                    }));
         }
 
         public bool OpenFile(FileInfo file)
@@ -149,20 +124,10 @@ namespace MyCathedra.FileManager
             File.Copy(sourceFileName, GetPath(destFileName));
         }
 
-        private string GetPath(string folder)
+        public IEnumerable<FileInfo> GetChildren(string path)
         {
-            return $"{BaseFolder}/{folder}";
-        }
-
-        private string NormalPath(string path)
-        {
-            return path.Replace(BaseFolder, string.Empty).Remove(0, 1);
-        }
-
-        private string ParsePath(string path)
-        {
-            var indexOf = path.LastIndexOf('\\');
-            return path.Substring(indexOf + 1);
+            path = GetPath(path);
+            return FileInfos(path);
         }
 
         public void CreateFolder(string path, string folderName)
@@ -181,6 +146,81 @@ namespace MyCathedra.FileManager
             {
                 File.Delete(path);
             }
+        }
+
+        public IEnumerable<FileInfo> Search(string path, string text)
+        {
+            var split = text.Split(' ');
+            var searchRec = SearchRec(GetPath(path));
+
+            var regex = new Regex(BaseFolder + @"/.+\\.+");
+            searchRec = searchRec.Where(s => regex.Match(s).Success).ToArray();
+
+            var list = searchRec
+                .Select(p => new {p, k = split.Aggregate(true, (current, s1) => current && p.Contains(s1))})
+                .Where(t => t.k)
+                .Select(t => new FileInfo
+                {
+                    Name = ParsePath(t.p),
+                    Path = NormalPath(t.p),
+                    UpdateUtc = Directory.GetLastWriteTimeUtc(t.p),
+                    IsFle = File.Exists(t.p)
+                });
+
+            return list;
+        }
+
+        private IEnumerable<string> SearchRec(string path)
+        {
+            var list = new List<string>();
+            var paths = Directory.GetDirectories(path);
+            foreach (var p in paths)
+            {
+                list.AddRange(SearchRec(p));
+            }
+
+            list.Add(path);
+            list.AddRange(Directory.GetFiles(path));
+
+            return list;
+        }
+
+        private IEnumerable<FileInfo> FileInfos(string path)
+        {
+            return Directory.GetDirectories(path)
+                .Select(p => new FileInfo
+                {
+                    Name = ParsePath(p),
+                    Path = NormalPath(p),
+                    UpdateUtc = Directory.GetLastWriteTimeUtc(p),
+                    IsFle = false
+                })
+                .Union(Directory.GetFiles(path)
+                    .Select(p => new FileInfo
+                    {
+                        Name = ParsePath(p),
+                        Path = NormalPath(p),
+                        UpdateUtc = Directory.GetLastWriteTimeUtc(p),
+                        IsFle = true
+                    }))
+                .OrderBy(f => f.IsFle)
+                .ThenBy(f => f.Name);
+        }
+
+        private string GetPath(string folder)
+        {
+            return $"{BaseFolder}/{folder}";
+        }
+
+        private string NormalPath(string path)
+        {
+            return path.Replace(BaseFolder, string.Empty).Remove(0, 1);
+        }
+
+        private string ParsePath(string path)
+        {
+            var indexOf = path.LastIndexOf('\\');
+            return path.Substring(indexOf + 1);
         }
     }
 

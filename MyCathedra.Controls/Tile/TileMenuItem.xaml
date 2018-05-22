@@ -10,7 +10,7 @@
     <Button.Resources>
         <Utils:HorizontalToTextAlignmentConverter x:Key="HorizontalToTextAlignmentConverter"/>
         <Storyboard x:Key="OnHover">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="itemIcon">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" >
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CubicEase EasingMode="EaseOut"/>
@@ -22,9 +22,9 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="OnLeave">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="itemIcon">
-                <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0.8"/>
-            </DoubleAnimationUsingKeyFrames>
+            <!-- <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" "> -->
+            <!--     <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0.8"/> -->
+            <!-- </DoubleAnimationUsingKeyFrames> -->
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="rowSpace">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="8"/>
             </DoubleAnimationUsingKeyFrames>
@@ -40,11 +40,12 @@
     </Button.Triggers>
     <Grid x:Name="itemGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding Height, ElementName=tileMenuItem}"/>
+            <!-- <ColumnDefinition Width="{Binding Height, ElementName=tileMenuItem}"/> -->
             <ColumnDefinition x:Name="rowSpace" Width="4"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Path x:Name="itemIcon" Stretch="Uniform" Opacity="0.8" Fill="{Binding Iconground, ElementName=tileMenuItem}" Margin="{Binding Padding, ElementName=tileMenuItem}"/>
-        <TextBlock x:Name="itemLabel"  Grid.Column="2"  Text="{Binding Text, ElementName=tileMenuItem}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"  Margin="{Binding Padding, ElementName=tileMenuItem}" Foreground="{Binding Foreground, ElementName=tileMenuItem}" FontFamily="{Binding FontFamily, ElementName=tileMenuItem}" FontSize="{Binding FontSize, ElementName=tileMenuItem}" FontWeight="{Binding FontWeight, ElementName=tileMenuItem}" FontStyle="{Binding FontStyle, ElementName=tileMenuItem}" HorizontalAlignment="{Binding HorizontalContentAlignment, ElementName=tileMenuItem}" VerticalAlignment="{Binding VerticalContentAlignment, ElementName=tileMenuItem}" TextAlignment="{Binding HorizontalContentAlignment, Converter={StaticResource HorizontalToTextAlignmentConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TileMenuItem}}}"/>
+        <!-- <Path x:Name="itemIcon" Stretch="Uniform" Opacity="0.8" Fill="{Binding Iconground, ElementName=tileMenuItem}" Margin="{Binding Padding, ElementName=tileMenuItem}"/> -->
+        <TextBlock x:Name="itemLabel"  Grid.Column="1"  Text="{Binding Text, ElementName=tileMenuItem}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"  Margin="{Binding Padding, ElementName=tileMenuItem}" Foreground="{Binding Foreground, ElementName=tileMenuItem}" FontFamily="{Binding FontFamily, ElementName=tileMenuItem}" FontSize="{Binding FontSize, ElementName=tileMenuItem}" FontWeight="{Binding FontWeight, ElementName=tileMenuItem}" FontStyle="{Binding FontStyle, ElementName=tileMenuItem}" HorizontalAlignment="{Binding HorizontalContentAlignment, ElementName=tileMenuItem}" VerticalAlignment="{Binding VerticalContentAlignment, ElementName=tileMenuItem}" TextAlignment="{Binding HorizontalContentAlignment, Converter={StaticResource HorizontalToTextAlignmentConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TileMenuItem}}}"/>
     </Grid>
 </Button>
+

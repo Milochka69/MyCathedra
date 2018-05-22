@@ -26,8 +26,8 @@ namespace MyCathedra.Controls.Tile
         private static void CurrentIcongroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             TileMenuItem uc = (TileMenuItem)d;
-            Path path = uc.itemIcon;
-            path.Fill = (Brush)e.NewValue;
+//            Path path = uc.itemIcon;
+//            path.Fill = (Brush)e.NewValue;
         }
 
         private static bool ValidateCurrentIconground(object value)
@@ -55,18 +55,18 @@ namespace MyCathedra.Controls.Tile
         /// The image displayed by the button.
         /// </summary>
         /// <remarks>The image is specified in XAML as an absolute or relative path.</remarks>
-        [Description("The image displayed by the button."), Category("Appearance")]
-        public Geometry PathSource
-        {
-            get
-            {
-                return itemIcon.Data;
-            }
-            set
-            {
-                itemIcon.Data = value;
-            }
-        }
+//        [Description("The image displayed by the button."), Category("Appearance")]
+//        public Geometry PathSource
+//        {
+//            get
+//            {
+//                return itemIcon.Data;
+//            }
+//            set
+//            {
+//                itemIcon.Data = value;
+//            }
+//        }
 
         /// <summary>
         /// The text displayed by the button.
