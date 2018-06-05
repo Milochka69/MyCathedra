@@ -72,9 +72,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AutoBox.xaml.cs">
+      <DependentUpon>AutoBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InputBox.xaml.cs">
       <DependentUpon>InputBox.xaml</DependentUpon>
     </Compile>
+    <Page Include="AutoBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -98,6 +105,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PasswordService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -125,6 +133,10 @@
     <ProjectReference Include="..\MyCathedra.Controls\MyCathedra.Controls.csproj">
       <Project>{cdded809-6aff-42cb-8254-68958f43312f}</Project>
       <Name>MyCathedra.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyCathedra.DataManager\MyCathedra.DataManager.csproj">
+      <Project>{b025f8d1-7848-4d17-82d7-cd996c342c4e}</Project>
+      <Name>MyCathedra.DataManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyCathedra.FileManager\MyCathedra.FileManager.csproj">
       <Project>{f4ad8500-6b13-4387-83f6-1d1caef54cc1}</Project>

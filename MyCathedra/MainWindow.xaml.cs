@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
 using MyCathedra.Controls.Tile;
+using MyCathedra.DataManager;
 using FileInfo = MyCathedra.FileManager.FileInfo;
 
 namespace MyCathedra
@@ -14,6 +15,7 @@ namespace MyCathedra
     {
         private readonly FileManager.FileManager _fileManager;
         private readonly IList<Expander> _expanders;
+        private readonly DbManager _dbManager;
 
         private string _currentPath;
         private string _search;
@@ -34,6 +36,7 @@ namespace MyCathedra
         {
             _search = null;
             _fileManager = new FileManager.FileManager();
+            _dbManager = new DbManager();
             _expanders = new List<Expander>();
             InitializeComponent();
             InitWindow();

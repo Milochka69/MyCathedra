@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCathedra.FileManager", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCathedra.Controls", "MyCathedra.Controls\MyCathedra.Controls.csproj", "{CDDED809-6AFF-42CB-8254-68958F43312F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCathedra.DataManager", "MyCathedra.DataManager\MyCathedra.DataManager.csproj", "{B025F8D1-7848-4D17-82D7-CD996C342C4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CDDED809-6AFF-42CB-8254-68958F43312F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDDED809-6AFF-42CB-8254-68958F43312F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDDED809-6AFF-42CB-8254-68958F43312F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B025F8D1-7848-4D17-82D7-CD996C342C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B025F8D1-7848-4D17-82D7-CD996C342C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B025F8D1-7848-4D17-82D7-CD996C342C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B025F8D1-7848-4D17-82D7-CD996C342C4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
