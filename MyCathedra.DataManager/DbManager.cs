@@ -26,7 +26,7 @@ namespace MyCathedra.DataManager
             login = login.ToLower();
             using (var db = new SQLiteConnection(Path))
             {
-                return db.Table<User>().Single(u => u.Login == login);
+                return db.Table<User>().SingleOrDefault(u => u.Login == login);
 
             }
         }
