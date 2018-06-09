@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,6 +18,8 @@ namespace MyCathedra
         private readonly FileManager.FileManager _fileManager;
         private readonly IList<Expander> _expanders;
         private readonly DbManager _dbManager;
+        private readonly PasswordService _passwordService;
+        private readonly Guid _userId;
 
         private string _currentPath;
         private string _search;
@@ -34,12 +38,21 @@ namespace MyCathedra
 
         public MainWindow()
         {
+            _passwordService = new PasswordService();
             _search = null;
             _fileManager = new FileManager.FileManager();
-            _dbManager = new DbManager();
+            _dbManager = new DbManager(_passwordService);
             _expanders = new List<Expander>();
             InitializeComponent();
+            _userId = Autorization();
             InitWindow();
+        }
+
+        private Guid Autorization()
+        {
+            var autoBox = new AutoBox(_dbManager, _passwordService);
+            if (autoBox.ShowDialog() == false) Application.Current.Shutdown();
+            return autoBox.UserId;
         }
 
         private void InitWindow()
@@ -100,7 +113,7 @@ namespace MyCathedra
             DataGridUpdate(fileInfos);
         }
 
-        private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
+        private async void Row_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             var row = sender as DataGridRow;
             if (!(row?.Item is FileInfo rowItem)) return;
@@ -108,6 +121,7 @@ namespace MyCathedra
             if (rowItem.IsFle)
             {
                 _fileManager.OpenFile(rowItem);
+                await _dbManager.InsertActivity(_userId, rowItem.Path);
             }
             else
             {
@@ -117,7 +131,7 @@ namespace MyCathedra
             }
         }
 
-        private void Add(object sender, RoutedEventArgs e)
+        private async void Add(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitlePath)) return;
 
@@ -133,7 +147,8 @@ namespace MyCathedra
             if (showDialog == null || !showDialog.Value) return;
 
             var file = fileDialog.FileName;
-            _fileManager.AddFile(file, TitlePath);
+            var path = _fileManager.AddFile(file, TitlePath);
+            await _dbManager.InsertActivity(_userId, path);
             DataGridUpdate();
         }
 
@@ -182,7 +197,7 @@ namespace MyCathedra
             DataGridUpdate();
         }
 
-        private void DataGrid_Drop(object sender, DragEventArgs e)
+        private async void DataGrid_Drop(object sender, DragEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitlePath)) return;
             if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
@@ -193,6 +208,7 @@ namespace MyCathedra
             foreach (var file in files)
             {
                 _fileManager.AddFile(file, TitlePath);
+                await _dbManager.InsertActivity(_userId, file);
             }
 
             DataGridUpdate();
@@ -222,8 +238,22 @@ namespace MyCathedra
             DataGridUpdate(fileInfos);
         }
 
-        private void DataGridUpdate(IEnumerable<FileInfo> fileInfos)
+        private async void DataGridUpdate(IEnumerable<FileInfo> fileInfos)
         {
+            fileInfos = fileInfos.ToArray();
+            var paths = fileInfos.Select(f => f.Path).ToArray();
+            var userActivities = await _dbManager.GetUserActivity(paths);
+            fileInfos = fileInfos.Select(f =>
+            {
+                var activity = userActivities.SingleOrDefault(a => a.Path == f.Path.Replace('\\', '/'));
+                if (activity != null)
+                {
+                    f.UserName = activity.UserName;
+                    f.UpdateUtc = activity.Data;
+                }
+
+                return f;
+            });
             DataGrid.ItemsSource = fileInfos;
         }
     }

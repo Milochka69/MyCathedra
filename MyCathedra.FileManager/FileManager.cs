@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -117,11 +116,12 @@ namespace MyCathedra.FileManager
             return true;
         }
 
-        public void AddFile(string sourceFileName, string destFileName)
+        public string AddFile(string sourceFileName, string destFileName)
         {
             var fileName = ParsePath(sourceFileName);
             destFileName += $"/{fileName}";
             File.Copy(sourceFileName, GetPath(destFileName));
+            return destFileName;
         }
 
         public IEnumerable<FileInfo> GetChildren(string path)
@@ -222,13 +222,5 @@ namespace MyCathedra.FileManager
             var indexOf = path.LastIndexOf('\\');
             return path.Substring(indexOf + 1);
         }
-    }
-
-    public class FileInfo
-    {
-        public string Name { get; set; }
-        public DateTime UpdateUtc { get; set; }
-        public string Path { get; set; }
-        public bool IsFle { get; set; }
     }
 }

@@ -64,6 +64,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="225" />
                     <DataGridTextColumn Header="Дата изменения" Binding="{Binding UpdateUtc}" Width="160" />
+                    <DataGridTextColumn Header="Последний изменивший" Binding="{Binding UserName}" Width="200"/>
                     <DataGridTextColumn Header="Путь" Binding="{Binding Path}" />
                 </DataGrid.Columns>
                 <DataGrid.Resources>

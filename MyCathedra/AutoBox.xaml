@@ -20,17 +20,17 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label  Grid.Column="1"  Grid.Row="0"  Height="25" > </Label>
+        <Label Name="ExceptionMessege"  Grid.Column="1"  Grid.Row="0"  Height="25" />
 
-        <Label Name="Label1" Grid.Column="1"  Grid.Row="1" >Login:</Label>
-        <TextBox Name="LoginTB" Grid.Column="1" Grid.Row="2" MinWidth="250">Login</TextBox>
+        <Label Grid.Column="1"  Grid.Row="1" >Login:</Label>
+        <TextBox Name="LoginTB" Grid.Column="1" Grid.Row="2" MinWidth="250"/>
        
         <Label  Grid.Column="1"  Grid.Row="3">Password:</Label>
-        <TextBox Name="PasswordTB" Grid.Column="1" Grid.Row="4" MinWidth="250" >Password</TextBox>
+        <TextBox Name="PasswordTB" Grid.Column="1" Grid.Row="4" MinWidth="250"/> 
       
         <WrapPanel Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button IsDefault="True" Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_Вход</Button>
-            <Button IsCancel="True" MinWidth="60" Click="Button_Click">_Выход</Button>
+            <Button Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_Вход</Button>
+            <Button IsCancel="True" MinWidth="60" >_Выход</Button>
         </WrapPanel>
 
     </Grid>

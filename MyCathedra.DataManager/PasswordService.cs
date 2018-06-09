@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace MyCathedra
+namespace MyCathedra.DataManager
 {
     public class PasswordService
     {
