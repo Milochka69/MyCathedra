@@ -155,22 +155,33 @@ namespace MyCathedra
         private void Back(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitlePath)) return;
+            IEnumerable<FileInfo> fileInfos;
+            if (_search != null)
+            {
+                _search = null;
+                fileInfos = _fileManager.GetChildren(TitlePath);
+            }
+            else
+            {
+                var path = _fileManager.GetParentPath(TitlePath);
+                if (string.IsNullOrWhiteSpace(path)) return;
+                TitlePath = path;
+                fileInfos = _fileManager.GetChildren(path);
+            }
 
-            var path = _fileManager.GetParentPath(TitlePath);
-            if (string.IsNullOrWhiteSpace(path)) return;
-            TitlePath = path;
-            var fileInfos = _fileManager.GetChildren(path);
             DataGridUpdate(fileInfos);
         }
 
-        private void Rename(object sender, RoutedEventArgs e)
+        private async void Rename(object sender, RoutedEventArgs e)
         {
             if (!(DataGrid.CurrentItem is FileInfo fileInfo)) return;
 
             var inputBox = new InputBox("Переименовать?", fileInfo.Name);
             if (inputBox.ShowDialog() != true) return;
 
-            _fileManager.Move(fileInfo, inputBox.Answer);
+            var newPath = _fileManager.Move(fileInfo, inputBox.Answer);
+
+            if (fileInfo.IsFle) await _dbManager.InsertActivity(_userId, newPath);
 
             DataGridUpdate();
         }
@@ -207,8 +218,8 @@ namespace MyCathedra
 
             foreach (var file in files)
             {
-                _fileManager.AddFile(file, TitlePath);
-                await _dbManager.InsertActivity(_userId, file);
+                var filePath = _fileManager.AddFile(file, TitlePath);
+                await _dbManager.InsertActivity(_userId, filePath);
             }
 
             DataGridUpdate();
@@ -217,8 +228,8 @@ namespace MyCathedra
         private void Search(object sender, RoutedEventArgs e)
         {
             var searcText = SearcText.Text;
-            if (string.IsNullOrWhiteSpace(searcText)) return;
             _search = searcText;
+
             DataGridUpdate();
         }
 
@@ -227,7 +238,10 @@ namespace MyCathedra
             IEnumerable<FileInfo> fileInfos;
             if (_search != null)
             {
-                var path = string.IsNullOrWhiteSpace(TitlePath) ? "" : TitlePath;
+                var isAll = SearcCB.IsChecked != null && SearcCB.IsChecked.Value;
+                var path = string.IsNullOrWhiteSpace(TitlePath) || isAll
+                    ? string.Empty //поиск в негде
+                    : TitlePath;
                 fileInfos = _fileManager.Search(path, _search);
             }
             else
@@ -245,13 +259,14 @@ namespace MyCathedra
             var userActivities = await _dbManager.GetUserActivity(paths);
             fileInfos = fileInfos.Select(f =>
             {
-                var activity = userActivities.SingleOrDefault(a => a.Path == f.Path.Replace('\\', '/'));
+                f.ShowPath = f.Path.Replace('\\', '/');
+
+                var activity = userActivities.SingleOrDefault(a => a.Path == f.ShowPath);
                 if (activity != null)
                 {
                     f.UserName = activity.UserName;
-                    f.UpdateUtc = activity.Data;
+                    f.UpdateUtc = (f.UpdateUtc > activity.Data ? f.UpdateUtc : activity.Data).ToLocalTime();
                 }
-
                 return f;
             });
             DataGrid.ItemsSource = fileInfos;

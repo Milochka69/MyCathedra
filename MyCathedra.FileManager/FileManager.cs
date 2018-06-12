@@ -105,7 +105,7 @@ namespace MyCathedra.FileManager
             return true;
         }
 
-        public bool Move(FileInfo file, string newName)
+        public string Move(FileInfo file, string newName)
         {
             var path = GetPath(file.Path);
             var newPath = GetParentPath(path) + "/" + newName;
@@ -113,7 +113,7 @@ namespace MyCathedra.FileManager
             if (file.IsFle) File.Move(path, newPath);
             else Directory.Move(path, newPath);
 
-            return true;
+            return $"{GetParentPath(file.Path)}/{newName}";
         }
 
         public string AddFile(string sourceFileName, string destFileName)
@@ -150,22 +150,24 @@ namespace MyCathedra.FileManager
 
         public IEnumerable<FileInfo> Search(string path, string text)
         {
-            var split = text.Split(' ');
             var searchRec = SearchRec(GetPath(path));
-
             var regex = new Regex(BaseFolder + @"/.+\\.+");
             searchRec = searchRec.Where(s => regex.Match(s).Success).ToArray();
 
+            var split = text.Split(' ').Select(t => t.ToLower());
             var list = searchRec
-                .Select(p => new {p, k = split.Aggregate(true, (current, s1) => current && p.Contains(s1))})
-                .Where(t => t.k)
-                .Select(t => new FileInfo
-                {
-                    Name = ParsePath(t.p),
-                    Path = NormalPath(t.p),
-                    UpdateUtc = Directory.GetLastWriteTimeUtc(t.p),
-                    IsFle = File.Exists(t.p)
-                });
+                    .Select(p =>
+                        new {p, k = split.Aggregate(true, (current, s1) => current && p.ToLower().Contains(s1))})
+                    .Where(t => t.k)
+                    .Select(t => new FileInfo
+                    {
+                        Name = ParsePath(t.p),
+                        Path = NormalPath(t.p),
+                        UpdateUtc = Directory.GetLastWriteTimeUtc(t.p),
+                        IsFle = File.Exists(t.p)
+                    })
+                    .OrderByDescending(p => p.Name)
+                ;
 
             return list;
         }
