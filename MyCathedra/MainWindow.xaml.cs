@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
@@ -44,7 +44,7 @@ namespace MyCathedra
             _dbManager = new DbManager(_passwordService);
             _expanders = new List<Expander>();
             InitializeComponent();
-            _userId = Autorization();
+            _userId = _dbManager.GetUserByLogin("mila").Id; //Autorization();
             InitWindow();
         }
 
@@ -63,17 +63,12 @@ namespace MyCathedra
                 var stackPanel = new StackPanel {Background = new BrushConverter().ConvertFrom("#FFE5E5E5") as Brush};
                 foreach (var directoryChildren in _fileManager.GetChildren(directory))
                 {
-                    var item = new TileMenuItem
-                    {
-                        Text = directoryChildren.Name,
-                        //PathSource = ItemPathSource(directoryChildren.Name),
-                        Style = FindResource("TileMenuItem") as Style,
-                        FontSize = 15
-                    };
-
-                    item.Click += TileMenuItem_Click;
+                    var item = GetNewItem(directoryChildren.Name, TileMenuItem_Click);
                     stackPanel.Children.Add(item);
                 }
+
+                var menuItem = GetNewItem("Добавить", AddMenuItem_Click, false);
+                stackPanel.Children.Add(menuItem);
 
                 var element = new Expander
                 {
@@ -87,6 +82,61 @@ namespace MyCathedra
                 _expanders.Add(element);
                 BasePanal.Children.Add(element);
             }
+        }
+
+        private void AddMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var inputBox = new InputBox("Введите имя:");
+            if (inputBox.ShowDialog() != true) return;
+
+            var tileMenuItem = sender as TileMenuItem;
+            var stackPanel = tileMenuItem?.Parent as StackPanel;
+            var expander = stackPanel?.Parent as Expander;
+            var header = expander?.Header.ToString();
+            if (header == null) return;
+
+            var answer = inputBox.Answer;
+
+            _fileManager.CreateFolder(header, answer);
+            var item = GetNewItem(answer, TileMenuItem_Click);
+            stackPanel.Children.Insert(stackPanel.Children.Count - 1, item);
+        }
+
+        private TileMenuItem GetNewItem(string title, RoutedEventHandler action, bool isContextMenu = true)
+        {
+            RoutedEventHandler delete = null;
+            RoutedEventHandler rename = null;
+            if (isContextMenu)
+            {
+                delete = DeleteTileMenu;
+                rename = RenameTileMenu;
+            }
+
+            var item = new TileMenuItem(rename, delete)
+            {
+                Text = title,
+                //PathSource = ItemPathSource(directoryChildren.Name),
+                Style = FindResource("TileMenuItem") as Style,
+                FontSize = 15
+            };
+
+            item.Click += action;
+
+            return item;
+        }
+
+        private void DeleteTileMenu(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            var contextMenu = menuItem?.Parent as ContextMenu;
+            var tileMenuItem = contextMenu?.PlacementTarget as TileMenuItem;
+        }
+
+        private void RenameTileMenu(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            var contextMenu = menuItem?.Parent as ContextMenu;
+            var tileMenuItem = contextMenu?.PlacementTarget as TileMenuItem;
         }
 
         private void Expander_Expanded(object sender, RoutedEventArgs e)
@@ -267,6 +317,7 @@ namespace MyCathedra
                     f.UserName = activity.UserName;
                     f.UpdateUtc = (f.UpdateUtc > activity.Data ? f.UpdateUtc : activity.Data).ToLocalTime();
                 }
+
                 return f;
             });
             DataGrid.ItemsSource = fileInfos;
