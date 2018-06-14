@@ -36,13 +36,13 @@
     </Button.Resources>
     <Button.Triggers>
         <EventTrigger RoutedEvent="UIElement.MouseEnter">
-            <BeginStoryboard x:Name="OnHover_BeginStoryboard" Storyboard="{StaticResource OnHover}" />
+            <BeginStoryboard Storyboard="{StaticResource OnHover}" />
         </EventTrigger>
         <EventTrigger RoutedEvent="UIElement.MouseLeave">
-            <BeginStoryboard x:Name="OnLeave_BeginStoryboard" Storyboard="{StaticResource OnLeave}" />
+            <BeginStoryboard Storyboard="{StaticResource OnLeave}" />
         </EventTrigger>
     </Button.Triggers>
-    <Grid x:Name="itemGrid">
+    <Grid>
         <Grid.ColumnDefinitions>
             <!-- <ColumnDefinition Width="{Binding Height, ElementName=tileMenuItem}"/> -->
             <ColumnDefinition x:Name="rowSpace" Width="4" />
@@ -64,7 +64,7 @@
     <Button.ContextMenu>
         <ContextMenu x:Name="ContextMenu">
             <MenuItem x:Name="Rename" Header="Переименовать" />
-            <MenuItem x:Name="Delete"  Header="Удалить" />
+            <MenuItem x:Name="Delete" Header="Удалить" />
         </ContextMenu>
     </Button.ContextMenu>
 </Button>

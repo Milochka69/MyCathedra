@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyCathedra"
         mc:Ignorable="d"
         Title="Авторизация" Height="250" Width="400">
     <Grid  Margin="15">
@@ -23,12 +22,12 @@
         <Label Name="ExceptionMessege"  Grid.Column="1"  Grid.Row="0"  Height="25" />
 
         <Label Grid.Column="1"  Grid.Row="1" >Login:</Label>
-        <TextBox Name="LoginTB" Grid.Column="1" Grid.Row="2" MinWidth="250"/>
+        <TextBox Name="LoginTb" Grid.Column="1" Grid.Row="2" MinWidth="250"/>
        
         <Label  Grid.Column="1"  Grid.Row="3">Password:</Label>
-        <TextBox Name="PasswordTB" Grid.Column="1" Grid.Row="4" MinWidth="250"/> 
+        <TextBox Name="PasswordTb" Grid.Column="1" Grid.Row="4" MinWidth="250"/> 
       
-        <WrapPanel Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
+        <WrapPanel Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_Вход</Button>
             <Button IsCancel="True" MinWidth="60" >_Выход</Button>
         </WrapPanel>

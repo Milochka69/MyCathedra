@@ -116,6 +116,16 @@ namespace MyCathedra.FileManager
             return $"{GetParentPath(file.Path)}/{newName}";
         }
 
+        public string MoveFolder(string path, string newName)
+        {
+            var fullPath = GetPath(path);
+            var i = fullPath.LastIndexOf('/');
+            var newPath = fullPath.Remove(i) + "/" + newName;
+            Directory.Move(fullPath, newPath);
+
+            return $"{GetParentPath(path)}/{newName}".Remove(0, 1);
+        }
+
         public string AddFile(string sourceFileName, string destFileName)
         {
             var fileName = ParsePath(sourceFileName);
@@ -147,6 +157,12 @@ namespace MyCathedra.FileManager
                 File.Delete(path);
             }
         }
+
+        public void DeleteFolder(string path)
+        {
+            Directory.Delete(GetPath(path), true);
+        }
+
 
         public IEnumerable<FileInfo> Search(string path, string text)
         {

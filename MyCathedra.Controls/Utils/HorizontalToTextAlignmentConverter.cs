@@ -11,8 +11,7 @@ namespace MyCathedra.Controls.Utils
         {
             TextAlignment textAlignment;
 
-            // All I'm doing here is simply getting the integer value of the Enumeration.
-            switch ((int)value)
+            switch ((int) value)
             {
                 case 0:
                     // Left to Left
@@ -40,7 +39,7 @@ namespace MyCathedra.Controls.Utils
             HorizontalAlignment horizontalAlignment;
 
             // All I'm doing here is simply getting the integer value of the Enumeration.
-            switch ((int)value)
+            switch ((int) value)
             {
                 case 0:
                     // Left to Left

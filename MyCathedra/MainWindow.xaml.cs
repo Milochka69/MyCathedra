@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
@@ -13,7 +12,7 @@ using FileInfo = MyCathedra.FileManager.FileInfo;
 
 namespace MyCathedra
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow 
     {
         private readonly FileManager.FileManager _fileManager;
         private readonly IList<Expander> _expanders;
@@ -60,28 +59,38 @@ namespace MyCathedra
             var directories = _fileManager.GetBaseDirectories();
             foreach (var directory in directories)
             {
-                var stackPanel = new StackPanel {Background = new BrushConverter().ConvertFrom("#FFE5E5E5") as Brush};
+                var stackPanel = CreateStackPanel();
                 foreach (var directoryChildren in _fileManager.GetChildren(directory))
                 {
                     var item = GetNewItem(directoryChildren.Name, TileMenuItem_Click);
                     stackPanel.Children.Add(item);
                 }
 
-                var menuItem = GetNewItem("Добавить", AddMenuItem_Click, false);
-                stackPanel.Children.Add(menuItem);
-
-                var element = new Expander
-                {
-                    Content = stackPanel,
-                    Header = directory,
-                    Margin = new Thickness(0.8),
-                    FontSize = 17,
-                    FontWeight = FontWeights.DemiBold
-                };
-                element.Expanded += Expander_Expanded;
-                _expanders.Add(element);
-                BasePanal.Children.Add(element);
+                AddExpander(stackPanel, directory);
             }
+        }
+
+        private void AddExpander(StackPanel stackPanel, string header)
+        {
+            var menuItem = GetNewItem("Добавить", AddMenuItem_Click, false);
+            stackPanel.Children.Add(menuItem);
+
+            var element = new Expander
+            {
+                Content = stackPanel,
+                Header = header,
+                Margin = new Thickness(0.8),
+                FontSize = 17,
+                FontWeight = FontWeights.DemiBold
+            };
+            element.Expanded += Expander_Expanded;
+            _expanders.Add(element);
+            BasePanal.Children.Add(element);
+        }
+
+        private static StackPanel CreateStackPanel()
+        {
+            return new StackPanel {Background = new BrushConverter().ConvertFrom("#FFE5E5E5") as Brush};
         }
 
         private void AddMenuItem_Click(object sender, RoutedEventArgs e)
@@ -102,6 +111,16 @@ namespace MyCathedra
             stackPanel.Children.Insert(stackPanel.Children.Count - 1, item);
         }
 
+        private void AddBAseFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var inputBox = new InputBox("Введите имя:");
+            if (inputBox.ShowDialog() != true) return;
+
+            var stackPanel = CreateStackPanel();
+            AddExpander(stackPanel, inputBox.Answer);
+        }
+
+
         private TileMenuItem GetNewItem(string title, RoutedEventHandler action, bool isContextMenu = true)
         {
             RoutedEventHandler delete = null;
@@ -115,7 +134,6 @@ namespace MyCathedra
             var item = new TileMenuItem(rename, delete)
             {
                 Text = title,
-                //PathSource = ItemPathSource(directoryChildren.Name),
                 Style = FindResource("TileMenuItem") as Style,
                 FontSize = 15
             };
@@ -130,6 +148,12 @@ namespace MyCathedra
             var menuItem = sender as MenuItem;
             var contextMenu = menuItem?.Parent as ContextMenu;
             var tileMenuItem = contextMenu?.PlacementTarget as TileMenuItem;
+            var stackPanel = tileMenuItem?.Parent as StackPanel;
+            var expander = stackPanel?.Parent as Expander;
+            var header = expander?.Header.ToString();
+            if (header == null) return;
+            _fileManager.DeleteFolder($"{header}/{tileMenuItem.Text}");
+            stackPanel.Children.Remove(tileMenuItem);
         }
 
         private void RenameTileMenu(object sender, RoutedEventArgs e)
@@ -137,6 +161,16 @@ namespace MyCathedra
             var menuItem = sender as MenuItem;
             var contextMenu = menuItem?.Parent as ContextMenu;
             var tileMenuItem = contextMenu?.PlacementTarget as TileMenuItem;
+            var stackPanel = tileMenuItem?.Parent as StackPanel;
+            var expander = stackPanel?.Parent as Expander;
+            var header = expander?.Header.ToString();
+            if (header == null) return;
+
+            var inputBox = new InputBox("Введите имя:", tileMenuItem.Text);
+            if (inputBox.ShowDialog() != true) return;
+
+            var newName = _fileManager.MoveFolder($"{header}/{tileMenuItem.Text}", inputBox.Answer);
+            tileMenuItem.Text = newName;
         }
 
         private void Expander_Expanded(object sender, RoutedEventArgs e)
@@ -288,7 +322,7 @@ namespace MyCathedra
             IEnumerable<FileInfo> fileInfos;
             if (_search != null)
             {
-                var isAll = SearcCB.IsChecked != null && SearcCB.IsChecked.Value;
+                var isAll = SearcCb.IsChecked != null && SearcCb.IsChecked.Value;
                 var path = string.IsNullOrWhiteSpace(TitlePath) || isAll
                     ? string.Empty //поиск в негде
                     : TitlePath;

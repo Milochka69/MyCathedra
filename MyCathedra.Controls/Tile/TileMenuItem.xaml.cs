@@ -3,14 +3,13 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace MyCathedra.Controls.Tile
 {
     /// <summary>
     /// Логика взаимодействия для DrawerMenuItem.xaml
     /// </summary>
-    public partial class TileMenuItem : Button
+    public partial class TileMenuItem 
     {
         public static readonly DependencyProperty IcongroundProperty = DependencyProperty.RegisterAttached(
             "Iconground",
@@ -19,9 +18,9 @@ namespace MyCathedra.Controls.Tile
             new UIPropertyMetadata
             {
                 DefaultValue = Brushes.Black,
-                PropertyChangedCallback = new PropertyChangedCallback(CurrentIcongroundChanged)
+                PropertyChangedCallback = CurrentIcongroundChanged
             },
-            new ValidateValueCallback(ValidateCurrentIconground)
+            ValidateCurrentIconground
         );
 
         private static void CurrentIcongroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -37,7 +36,6 @@ namespace MyCathedra.Controls.Tile
         [Description("The color of image displayed by the button."), Category("Кисть")]
         public Brush Iconground
         {
-            get => (Brush) GetValue(IcongroundProperty);
             set => SetValue(IcongroundProperty, value);
         }
 
