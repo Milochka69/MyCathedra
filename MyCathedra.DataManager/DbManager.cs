@@ -26,8 +26,29 @@ namespace MyCathedra.DataManager
             }
         }
 
+        public  IEnumerable<LogInfo> GetLogInfo()
+        {
+            Activity[] activities;
+            User[] users;
+            using (var db = new SQLiteConnection(Path))
+            {
+                activities = db.Table<Activity>().OrderByDescending(a => a.DataUtc).ToArray();
+                var usersId = activities.Select(a => a.UserId).Distinct().ToArray();
+                users = db.Table<User>().Where(u => usersId.Contains(u.Id)).ToArray();
+            }
 
-        public Task InsertActivity(Guid userId, string path)
+
+            return activities.Select(a => new LogInfo
+            {
+                Id = a.Id,
+                DataUtc = a.DataUtc,
+                File = a.File,
+                Type = a.Type,
+                UserName = users.Single(u => u.Id == a.UserId).Login
+            });
+        }
+
+        public Task InsertActivity(Guid userId, string path, ActivityType type, string newName = null)
         {
             var db = new SQLiteAsyncConnection(Path);
 
@@ -36,19 +57,19 @@ namespace MyCathedra.DataManager
                 Id = Guid.NewGuid(),
                 UserId = userId,
                 File = path.Replace('\\', '/'),
-                DataUtc = DateTime.UtcNow
+                DataUtc = DateTime.UtcNow,
+                Type = type,
+                NewName = newName?.Replace('\\', '/')
             });
         }
 
         public async Task<UserActivity[]> GetUserActivity(string[] paths)
         {
-            UserActivity[] activitys;
-            List<User> users;
             paths = paths.Select(p => p.Replace('\\', '/')).ToArray();
 
             var db = new SQLiteAsyncConnection(Path);
 
-            activitys = (await db.Table<Activity>().OrderByDescending(a => a.DataUtc)
+            var activitys = (await db.Table<Activity>().OrderByDescending(a => a.DataUtc)
                     .Where(a => paths.Contains(a.File)).ToListAsync())
                 .GroupBy(a => a.File)
                 .Select(a => new UserActivity {UserId = a.First().UserId, Path = a.Key, Data = a.First().DataUtc})
@@ -56,8 +77,8 @@ namespace MyCathedra.DataManager
 
             var usersId = activitys.Select(a => a.UserId).Distinct().ToArray();
 
-            users = await db.Table<User>().Where(u => usersId.Contains(u.Id)).ToListAsync();
-            
+            var users = await db.Table<User>().Where(u => usersId.Contains(u.Id)).ToListAsync();
+
             return activitys.Select(a =>
                 {
                     a.UserName = users.Single(u => u.Id == a.UserId).Login;

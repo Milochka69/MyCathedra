@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -12,10 +13,9 @@ using FileInfo = MyCathedra.FileManager.FileInfo;
 
 namespace MyCathedra
 {
-    public partial class MainWindow 
+    public partial class MainWindow
     {
         private readonly FileManager.FileManager _fileManager;
-        private readonly IList<Expander> _expanders;
         private readonly DbManager _dbManager;
         private readonly PasswordService _passwordService;
         private readonly Guid _userId;
@@ -41,7 +41,6 @@ namespace MyCathedra
             _search = null;
             _fileManager = new FileManager.FileManager();
             _dbManager = new DbManager(_passwordService);
-            _expanders = new List<Expander>();
             InitializeComponent();
             _userId = _dbManager.GetUserByLogin("mila").Id; //Autorization();
             InitWindow();
@@ -75,16 +74,31 @@ namespace MyCathedra
             var menuItem = GetNewItem("Добавить", AddMenuItem_Click, false);
             stackPanel.Children.Add(menuItem);
 
+            var contextMenu = new ContextMenu();
+            var item = new MenuItem
+            {
+                Header = "Переименовать"
+            };
+            item.Click += RenameBaseFolder;
+            contextMenu.Items.Add(item);
+            item = new MenuItem
+            {
+                Header = "Удалить"
+            };
+            item.Click += DeleteBaseFolder;
+            contextMenu.Items.Add(item);
+
+
             var element = new Expander
             {
                 Content = stackPanel,
                 Header = header,
                 Margin = new Thickness(0.8),
                 FontSize = 17,
-                FontWeight = FontWeights.DemiBold
+                FontWeight = FontWeights.DemiBold,
+                ContextMenu = contextMenu
             };
             element.Expanded += Expander_Expanded;
-            _expanders.Add(element);
             BasePanal.Children.Add(element);
         }
 
@@ -111,13 +125,15 @@ namespace MyCathedra
             stackPanel.Children.Insert(stackPanel.Children.Count - 1, item);
         }
 
-        private void AddBAseFolder_Click(object sender, RoutedEventArgs e)
+        private void AddBaseFolder_Click(object sender, RoutedEventArgs e)
         {
             var inputBox = new InputBox("Введите имя:");
             if (inputBox.ShowDialog() != true) return;
 
+            var answer = inputBox.Answer;
+            _fileManager.CreateFolder(answer, string.Empty);
             var stackPanel = CreateStackPanel();
-            AddExpander(stackPanel, inputBox.Answer);
+            AddExpander(stackPanel, answer);
         }
 
 
@@ -141,6 +157,33 @@ namespace MyCathedra
             item.Click += action;
 
             return item;
+        }
+
+        private void DeleteBaseFolder(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            var contextMenu = menuItem?.Parent as ContextMenu;
+            var expander = contextMenu?.PlacementTarget as Expander;
+            var header = expander?.Header.ToString();
+            if (header == null) return;
+            _fileManager.DeleteFolder(header);
+            BasePanal.Children.Remove(expander);
+        }
+
+        private void RenameBaseFolder(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            var contextMenu = menuItem?.Parent as ContextMenu;
+            var expander = contextMenu?.PlacementTarget as Expander;
+            var header = expander?.Header.ToString();
+            if (header == null) return;
+
+            var inputBox = new InputBox("Введите имя:", header);
+            if (inputBox.ShowDialog() != true) return;
+
+            var answer = inputBox.Answer;
+            _fileManager.MoveFolder(header, answer);
+            expander.Header = answer;
         }
 
         private void DeleteTileMenu(object sender, RoutedEventArgs e)
@@ -176,9 +219,9 @@ namespace MyCathedra
         private void Expander_Expanded(object sender, RoutedEventArgs e)
         {
             var currentExpander = sender as Expander;
-            foreach (var expander in _expanders)
+            foreach (var children in BasePanal.Children)
             {
-                if (expander.Header.ToString() != currentExpander?.Header.ToString())
+                if (children is Expander expander && expander.Header.ToString() != currentExpander?.Header.ToString())
                 {
                     expander.IsExpanded = false;
                 }
@@ -205,7 +248,7 @@ namespace MyCathedra
             if (rowItem.IsFle)
             {
                 _fileManager.OpenFile(rowItem);
-                await _dbManager.InsertActivity(_userId, rowItem.Path);
+                await _dbManager.InsertActivity(_userId, rowItem.Path, ActivityType.Open);
             }
             else
             {
@@ -232,7 +275,7 @@ namespace MyCathedra
 
             var file = fileDialog.FileName;
             var path = _fileManager.AddFile(file, TitlePath);
-            await _dbManager.InsertActivity(_userId, path);
+            await _dbManager.InsertActivity(_userId, path, ActivityType.Create);
             DataGridUpdate();
         }
 
@@ -265,7 +308,7 @@ namespace MyCathedra
 
             var newPath = _fileManager.Move(fileInfo, inputBox.Answer);
 
-            if (fileInfo.IsFle) await _dbManager.InsertActivity(_userId, newPath);
+            if (fileInfo.IsFle) await _dbManager.InsertActivity(_userId, fileInfo.Path, ActivityType.Rename, newPath);
 
             DataGridUpdate();
         }
@@ -289,6 +332,7 @@ namespace MyCathedra
                 MessageBox.Show($@"Удалить ""{fileInfo.Name}""?", "Удаление!", MessageBoxButton.YesNo);
             if (messageBoxResult != MessageBoxResult.Yes) return;
             _fileManager.Delete(fileInfo);
+            _dbManager.InsertActivity(_userId, fileInfo.Path, ActivityType.Delete);
             DataGridUpdate();
         }
 
@@ -303,7 +347,7 @@ namespace MyCathedra
             foreach (var file in files)
             {
                 var filePath = _fileManager.AddFile(file, TitlePath);
-                await _dbManager.InsertActivity(_userId, filePath);
+                await _dbManager.InsertActivity(_userId, filePath, ActivityType.Create);
             }
 
             DataGridUpdate();
@@ -355,6 +399,12 @@ namespace MyCathedra
                 return f;
             });
             DataGrid.ItemsSource = fileInfos;
+        }
+
+        private void LogShow(object sender, RoutedEventArgs e)
+        {
+            var logForm = new LogForm(_dbManager);
+            logForm.Show();
         }
     }
 }
