@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Авторизация" Height="250" Width="400">
+        Title="Авторизация" Height="250" Width="400" Icon="lol.png">
     <Grid  Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -25,7 +25,7 @@
         <TextBox Name="LoginTb" Grid.Column="1" Grid.Row="2" MinWidth="250"/>
        
         <Label  Grid.Column="1"  Grid.Row="3">Password:</Label>
-        <TextBox Name="PasswordTb" Grid.Column="1" Grid.Row="4" MinWidth="250"/> 
+        <PasswordBox Name="PasswordTb" Grid.Column="1" Grid.Row="4" MinWidth="250"/> 
       
         <WrapPanel Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_Вход</Button>

@@ -25,7 +25,6 @@ namespace MyCathedra.Controls.Tile
 
         private static void CurrentIcongroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            TileMenuItem uc = (TileMenuItem) d;
         }
 
         private static bool ValidateCurrentIconground(object value)
@@ -42,8 +41,8 @@ namespace MyCathedra.Controls.Tile
         [Description("The text displayed by the button."), Category("Appearance")]
         public String Text
         {
-            get => itemLabel.Text;
-            set => itemLabel.Text = value;
+            get => ItemLabel.Text;
+            set => ItemLabel.Text = value;
         }
 
         public TileMenuItem(RoutedEventHandler rename = null, RoutedEventHandler delete = null)

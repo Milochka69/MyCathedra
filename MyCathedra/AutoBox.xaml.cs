@@ -7,7 +7,7 @@ namespace MyCathedra
     /// <summary>
     /// Логика взаимодействия для AutoBox.xaml
     /// </summary>
-    public partial class AutoBox 
+    public partial class AutoBox
     {
         private readonly DbManager _dbManager;
         private readonly PasswordService _passwordService;
@@ -27,7 +27,7 @@ namespace MyCathedra
             try
             {
                 var login = LoginTb.Text;
-                var password = PasswordTb.Text;
+                var password = PasswordTb.Password;
                 var user = _dbManager.GetUserByLogin(login);
                 if (user == null) throw new ArgumentException("Пользователь с таким логином и паролем не существует.");
                 var hash = _passwordService.MakeHash(user.Id, password);

@@ -9,24 +9,21 @@ namespace MyCathedra.Controls.Utils
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            TextAlignment textAlignment;
+            if (value == null) return null;
 
+            TextAlignment textAlignment;
             switch ((int) value)
             {
                 case 0:
-                    // Left to Left
                     textAlignment = TextAlignment.Left;
                     break;
                 case 1:
-                    // Center to Center
                     textAlignment = TextAlignment.Center;
                     break;
                 case 2:
-                    // Right to Right
                     textAlignment = TextAlignment.Right;
                     break;
                 default:
-                    // Stretch to Justify
                     textAlignment = TextAlignment.Justify;
                     break;
             }
@@ -36,25 +33,21 @@ namespace MyCathedra.Controls.Utils
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            HorizontalAlignment horizontalAlignment;
+            if (value == null) return null;
 
-            // All I'm doing here is simply getting the integer value of the Enumeration.
+            HorizontalAlignment horizontalAlignment;
             switch ((int) value)
             {
                 case 0:
-                    // Left to Left
                     horizontalAlignment = HorizontalAlignment.Left;
                     break;
                 case 1:
-                    // Right to Right
                     horizontalAlignment = HorizontalAlignment.Right;
                     break;
                 case 2:
-                    // Center to Center
                     horizontalAlignment = HorizontalAlignment.Center;
                     break;
                 default:
-                    // Justify to Stretch
                     horizontalAlignment = HorizontalAlignment.Stretch;
                     break;
             }

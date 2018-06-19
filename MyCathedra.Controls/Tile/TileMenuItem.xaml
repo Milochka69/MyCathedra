@@ -4,13 +4,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MyCathedra.Controls.Tile"
-    xmlns:Utils="clr-namespace:MyCathedra.Controls.Utils" x:Name="tileMenuItem"
+    xmlns:utils="clr-namespace:MyCathedra.Controls.Utils" x:Name="tileMenuItem"
     x:Class="MyCathedra.Controls.Tile.TileMenuItem"
     mc:Ignorable="d" d:DesignWidth="200" Height="50" Padding="5" HorizontalContentAlignment="Stretch"
     VerticalContentAlignment="Center">
 
     <Button.Resources>
-        <Utils:HorizontalToTextAlignmentConverter x:Key="HorizontalToTextAlignmentConverter" />
+        <utils:HorizontalToTextAlignmentConverter x:Key="HorizontalToTextAlignmentConverter" />
         <Storyboard x:Key="OnHover">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1">
@@ -20,7 +20,7 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)"
-                                           Storyboard.TargetName="rowSpace">
+                                           Storyboard.TargetName="RowSpace">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="4" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
@@ -29,7 +29,7 @@
             <!--     <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0.8"/> -->
             <!-- </DoubleAnimationUsingKeyFrames> -->
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)"
-                                           Storyboard.TargetName="rowSpace">
+                                           Storyboard.TargetName="RowSpace">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="8" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
@@ -45,11 +45,11 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <!-- <ColumnDefinition Width="{Binding Height, ElementName=tileMenuItem}"/> -->
-            <ColumnDefinition x:Name="rowSpace" Width="4" />
+            <ColumnDefinition x:Name="RowSpace" Width="4" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <!-- <Path x:Name="itemIcon" Stretch="Uniform" Opacity="0.8" Fill="{Binding Iconground, ElementName=tileMenuItem}" Margin="{Binding Padding, ElementName=tileMenuItem}"/> -->
-        <TextBlock x:Name="itemLabel" Grid.Column="1" Text="{Binding Text, ElementName=tileMenuItem}"
+        <TextBlock x:Name="ItemLabel" Grid.Column="1" Text="{Binding Text, ElementName=tileMenuItem}"
                    TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
                    Margin="{Binding Padding, ElementName=tileMenuItem}"
                    Foreground="{Binding Foreground, ElementName=tileMenuItem}"

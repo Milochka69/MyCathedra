@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -18,7 +17,7 @@ namespace MyCathedra
         private readonly FileManager.FileManager _fileManager;
         private readonly DbManager _dbManager;
         private readonly PasswordService _passwordService;
-        private readonly Guid _userId;
+        private Guid _userId;
 
         private string _currentPath;
         private string _search;
@@ -42,15 +41,15 @@ namespace MyCathedra
             _fileManager = new FileManager.FileManager();
             _dbManager = new DbManager(_passwordService);
             InitializeComponent();
-            _userId = _dbManager.GetUserByLogin("mila").Id; //Autorization();
+            Autorization();
             InitWindow();
         }
 
-        private Guid Autorization()
+        private void Autorization()
         {
             var autoBox = new AutoBox(_dbManager, _passwordService);
             if (autoBox.ShowDialog() == false) Application.Current.Shutdown();
-            return autoBox.UserId;
+            _userId = autoBox.UserId;
         }
 
         private void InitWindow()
@@ -405,6 +404,11 @@ namespace MyCathedra
         {
             var logForm = new LogForm(_dbManager);
             logForm.Show();
+        }
+
+        private void LogOut(object sender, RoutedEventArgs e)
+        {
+            Autorization();
         }
     }
 }

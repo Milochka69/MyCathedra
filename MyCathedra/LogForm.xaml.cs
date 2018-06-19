@@ -8,7 +8,7 @@ namespace MyCathedra
     /// <summary>
     /// Логика взаимодействия для LogForm.xaml
     /// </summary>
-    public partial class LogForm : Window
+    public partial class LogForm
     {
         private readonly DbManager _dbManager;
 
