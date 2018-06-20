@@ -100,12 +100,12 @@ namespace MyCathedra.FileManager
         public bool OpenFile(FileInfo file)
         {
             if (!file.IsFle) return false;
-            var fileName = GetPath(file.Path);
-            System.Diagnostics.Process.Start(fileName);
+            var fileName = GetPath(file.Path);  // востанавливает путь.
+            System.Diagnostics.Process.Start(fileName);// запускает файл
             return true;
         }
 
-        public string Move(FileInfo file, string newName)
+        public string Move(FileInfo file, string newName) // переименовывает папку или файл справа окна
         {
             var path = GetPath(file.Path);
             var newPath = GetParentPath(path) + "/" + newName;
@@ -116,7 +116,7 @@ namespace MyCathedra.FileManager
             return $"{GetParentPath(file.Path)}/{newName}";
         }
 
-        public string MoveFolder(string path, string newName)
+        public string MoveFolder(string path, string newName) //переименовывает папку в навигационной панели
         {
             var fullPath = GetPath(path);
             var i = fullPath.LastIndexOf('/');
@@ -129,7 +129,7 @@ namespace MyCathedra.FileManager
         public string AddFile(string sourceFileName, string destFileName)
         {
             var fileName = ParsePath(sourceFileName);
-            destFileName += $"/{fileName}";
+            destFileName += $"/{fileName}";//добавляет впереди /
             File.Copy(sourceFileName, GetPath(destFileName));
             return destFileName;
         }
@@ -168,7 +168,7 @@ namespace MyCathedra.FileManager
         {
             var searchRec = SearchRec(GetPath(path));
             var regex = new Regex(BaseFolder + @"/.+\\.+");
-            searchRec = searchRec.Where(s => regex.Match(s).Success).ToArray();
+            searchRec = searchRec.Where(s => regex.Match(s).Success).ToArray(); // отсеивает новигационное меню
 
             var split = text.Split(' ').Select(t => t.ToLower());
             var list = searchRec
@@ -190,7 +190,7 @@ namespace MyCathedra.FileManager
 
         private IEnumerable<string> SearchRec(string path)
         {
-            var list = new List<string>();
+            var list = new List<string>();//захожу в папочку
             var paths = Directory.GetDirectories(path);
             foreach (var p in paths)
             {
@@ -232,7 +232,7 @@ namespace MyCathedra.FileManager
 
         private string NormalPath(string path)
         {
-            return path.Replace(BaseFolder, string.Empty).Remove(0, 1);
+            return path.Replace(BaseFolder, string.Empty).Remove(0, 1); // удаляет базовую директорию 
         }
 
         private string ParsePath(string path)
