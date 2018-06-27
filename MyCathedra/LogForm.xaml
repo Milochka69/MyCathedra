@@ -5,15 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="История" Height="450" Width="800" Icon="lol.png">
-    <Grid> 
-        <DataGrid x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True"
-                  SelectionMode="Single">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Действие" Binding="{Binding Type}" />
-                <DataGridTextColumn Header="Пользователь" Binding="{Binding UserName}"/>
-                <DataGridTextColumn Header="Дата" Binding="{Binding DataUtc}" Width="160" />
-                <DataGridTextColumn Header="Путь" Binding="{Binding File}" />
-            </DataGrid.Columns>
-        </DataGrid>
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Visible"
+                      HorizontalScrollBarVisibility="Visible"
+                      PreviewMouseWheel="UIElement_OnPreviewMouseWheel"
+                      ScrollChanged="ScrollViewer_OnScrollChanged">
+            <DataGrid x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                      SelectionMode="Single" VerticalScrollBarVisibility="Disabled"
+                      HorizontalScrollBarVisibility="Disabled">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Действие" Binding="{Binding Type}" />
+                    <DataGridTextColumn Header="Пользователь" Binding="{Binding UserName}" />
+                    <DataGridTextColumn Header="Дата" Binding="{Binding DataUtc}" Width="160" />
+                    <DataGridTextColumn Header="Путь" Binding="{Binding File}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
     </Grid>
 </Window>

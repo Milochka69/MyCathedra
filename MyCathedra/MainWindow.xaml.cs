@@ -246,8 +246,8 @@ namespace MyCathedra
 
             if (rowItem.IsFle)
             {
-                _fileManager.OpenFile(rowItem);
-                await _dbManager.InsertActivity(_userId, rowItem.Path, ActivityType.Open);
+                var isOpen = _fileManager.OpenFile(rowItem);
+                if (isOpen) await _dbManager.InsertActivity(_userId, rowItem.Path, ActivityType.Open);
             }
             else
             {
@@ -265,7 +265,7 @@ namespace MyCathedra
             {
                 InitialDirectory = "c:\\",
                 Multiselect = false,
-                Filter = "file |*.doc;*.xls;*.ppt;*.txt;*.pdf",
+                Filter = "Документы |*.doc;*.xls;*.ppt;*.txt;*.pdf;*.docx | Все файлы (*.*)|*.*",
                 RestoreDirectory = true
             };
 
@@ -296,6 +296,18 @@ namespace MyCathedra
             }
 
             DataGridUpdate(fileInfos);
+        }
+
+        private void Duplicate(object sender, RoutedEventArgs e)
+        {
+            if (!(DataGrid.CurrentItem is FileInfo fileInfo)) return;
+
+            var inputBox = new InputBox("Новое имя", fileInfo.Name);
+            if (inputBox.ShowDialog() != true || inputBox.Answer == fileInfo.Name) return;
+
+            _fileManager.Duplicate(fileInfo, inputBox.Answer, _dbManager, _userId);
+
+            DataGridUpdate();
         }
 
         private async void Rename(object sender, RoutedEventArgs e)
@@ -330,8 +342,8 @@ namespace MyCathedra
             var messageBoxResult =
                 MessageBox.Show($@"Удалить ""{fileInfo.Name}""?", "Удаление!", MessageBoxButton.YesNo);
             if (messageBoxResult != MessageBoxResult.Yes) return;
-            _fileManager.Delete(fileInfo);
-            _dbManager.InsertActivity(_userId, fileInfo.Path, ActivityType.Delete);
+            _fileManager.Delete(fileInfo, _dbManager, _userId);
+//            _dbManager.InsertActivity(_userId, fileInfo.Path, ActivityType.Delete);
             DataGridUpdate();
         }
 

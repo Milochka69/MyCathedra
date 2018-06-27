@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using MyCathedra.DataManager;
 
 namespace MyCathedra.FileManager
 {
@@ -99,10 +102,49 @@ namespace MyCathedra.FileManager
 
         public bool OpenFile(FileInfo file)
         {
-            if (!file.IsFle) return false;
-            var fileName = GetPath(file.Path);  // востанавливает путь.
-            System.Diagnostics.Process.Start(fileName);// запускает файл
-            return true;
+            try
+            {
+                if (!file.IsFle) return false;
+                var fileName = GetPath(file.Path); // востанавливает путь.
+                Process.Start(fileName); // запускает файл
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void Duplicate(FileInfo file, string newName, DbManager dbManager, Guid userId)
+        {
+            var sourcePath = GetPath(file.Path);
+
+            if (file.IsFle)
+            {
+                var fileName = Path.GetFileName(sourcePath);
+                if (string.IsNullOrWhiteSpace(fileName)) return;
+                var destFileName = sourcePath.Replace(fileName, newName);
+                File.Copy(sourcePath, destFileName);
+            }
+            else
+            {
+                var directoryName = sourcePath.Remove(0, sourcePath.LastIndexOf('\\') + 1);
+                if (string.IsNullOrWhiteSpace(directoryName)) return;
+                foreach (var dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+                {
+                    var regex = new Regex(Regex.Escape(directoryName));
+                    var replace = regex.Replace(dirPath, newName, 1);
+                    Directory.CreateDirectory(replace);
+                }
+
+                foreach (var filePath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+                {
+                    var regex = new Regex(Regex.Escape(directoryName));
+                    var destFileName = regex.Replace(filePath, newName, 1);
+                    File.Copy(filePath, destFileName, true);
+                    dbManager.InsertActivity(userId, NormalPath(destFileName), ActivityType.Create);
+                }
+            }
         }
 
         public string Move(FileInfo file, string newName) // переименовывает папку или файл справа окна
@@ -129,7 +171,7 @@ namespace MyCathedra.FileManager
         public string AddFile(string sourceFileName, string destFileName)
         {
             var fileName = ParsePath(sourceFileName);
-            destFileName += $"/{fileName}";//добавляет впереди /
+            destFileName += $"/{fileName}"; //добавляет впереди /
             File.Copy(sourceFileName, GetPath(destFileName));
             return destFileName;
         }
@@ -145,17 +187,24 @@ namespace MyCathedra.FileManager
             Directory.CreateDirectory(GetPath($"{path}/{folderName}"));
         }
 
-        public void Delete(FileInfo fileInfo)
+        public void Delete(FileInfo fileInfo, DbManager dbManager, Guid userId)
         {
             var path = GetPath(fileInfo.Path);
             if (!fileInfo.IsFle)
             {
+                foreach (var filePath in Directory.GetFiles(path, "*.*", SearchOption.AllDirectories))
+                {
+                    dbManager.InsertActivity(userId, NormalPath(filePath), ActivityType.Delete);
+                }
+
                 Directory.Delete(path, true);
             }
             else
             {
                 File.Delete(path);
             }
+
+            dbManager.InsertActivity(userId, fileInfo.Path, ActivityType.Delete);
         }
 
         public void DeleteFolder(string path)
@@ -190,7 +239,7 @@ namespace MyCathedra.FileManager
 
         private IEnumerable<string> SearchRec(string path)
         {
-            var list = new List<string>();//захожу в папочку
+            var list = new List<string>(); //захожу в папочку
             var paths = Directory.GetDirectories(path);
             foreach (var p in paths)
             {

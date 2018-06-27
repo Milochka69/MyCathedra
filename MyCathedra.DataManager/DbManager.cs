@@ -9,13 +9,13 @@ namespace MyCathedra.DataManager
 {
     public class DbManager
     {
-        private const string Path = "./MyCathedraDb.sqlite";//имя базы 
+        private const string Path = "./MyCathedraDb.sqlite"; //имя базы 
 
-        public DbManager(PasswordService passwordService)  // конструктор класса базы данных 
+        public DbManager(PasswordService passwordService) // конструктор класса базы данных 
         {
             if (File.Exists(Path)) return;
 
-            using (var db = new SQLiteConnection(Path))   // конект с базой
+            using (var db = new SQLiteConnection(Path)) // конект с базой
             {
                 db.CreateTable<User>();
                 db.CreateTable<Activity>();
@@ -26,19 +26,21 @@ namespace MyCathedra.DataManager
             }
         }
 
-        public  IEnumerable<LogInfo> GetLogInfo()  // получение лога
+        public IEnumerable<LogInfo> GetLogInfo(int page, int pageSize) // получение лога
         {
             Activity[] activities; // массивчик
             User[] users;
             using (var db = new SQLiteConnection(Path))
             {
-                activities = db.Table<Activity>().OrderByDescending(a => a.DataUtc).ToArray(); // сортируем по дате из активностей
-                var usersId = activities.Select(a => a.UserId).Distinct().ToArray(); 
+                activities = db.Table<Activity>().OrderByDescending(a => a.DataUtc)
+                    .Skip(page * pageSize).Take(pageSize)
+                    .ToArray(); // сортируем по дате из активностей
+                var usersId = activities.Select(a => a.UserId).Distinct().ToArray();
                 users = db.Table<User>().Where(u => usersId.Contains(u.Id)).ToArray();
             }
 
 
-            return activities.Select(a => new LogInfo 
+            return activities.Select(a => new LogInfo
             {
                 Id = a.Id,
                 DataUtc = a.DataUtc,
@@ -48,7 +50,7 @@ namespace MyCathedra.DataManager
             });
         }
 
-        public Task InsertActivity(Guid userId, string path, ActivityType type, string newName = null) 
+        public Task InsertActivity(Guid userId, string path, ActivityType type, string newName = null)
         {
             var db = new SQLiteAsyncConnection(Path);
 

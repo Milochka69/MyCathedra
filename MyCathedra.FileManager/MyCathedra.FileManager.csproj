@@ -45,5 +45,11 @@
     <Compile Include="FileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyCathedra.DataManager\MyCathedra.DataManager.csproj">
+      <Project>{b025f8d1-7848-4d17-82d7-cd996c342c4e}</Project>
+      <Name>MyCathedra.DataManager</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
