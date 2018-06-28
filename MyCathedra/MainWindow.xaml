@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" VerticalAlignment="Top">
             <MenuItem Header="История" Click="LogShow" />
-            <MenuItem Header="Выход" Click="LogOut"/>
+            <MenuItem Header="Выход" Click="LogOut" />
         </Menu>
         <Grid Grid.Column="0" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -51,10 +51,9 @@
                 </Button>
                 <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         Click="Duplicate">
-                    Дубилровать
-                    <!-- <Path -->
-                    <!--     Data="M10,4L12,6H20A2,2 0 0,1 22,8V18A2,2 0 0,1 20,20H4C2.89,20 2,19.1 2,18V6C2,4.89 2.89,4 4,4H10M15,9V12H12V14H15V17H17V14H20V12H17V9H15Z" -->
-                    <!--     Margin="8" Stretch="Uniform" Fill="Black" /> -->
+                    <Path
+                        Data="M22,4H14L12,2H6A2,2 0 0,0 4,4V16A2,2 0 0,0 6,18H22A2,2 0 0,0 24,16V6A2,2 0 0,0 22,4M2,6H0V11H0V20A2,2 0 0,0 2,22H20V20H2V6Z"
+                        Margin="8" Stretch="Uniform" Fill="Black" />
                 </Button>
                 <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         Click="CreateFolder">
@@ -79,7 +78,7 @@
                 </Button>
 
 
-                <TextBox x:Name="SearcText" Height="30" Width="200" HorizontalAlignment="Right" BorderBrush="Black"/>
+                <TextBox x:Name="SearcText" Height="30" Width="200" HorizontalAlignment="Right" BorderBrush="Black" />
                 <Button Height="43" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         Click="Search">
                     <Path

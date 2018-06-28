@@ -125,6 +125,7 @@ namespace MyCathedra.FileManager
                 if (string.IsNullOrWhiteSpace(fileName)) return;
                 var destFileName = sourcePath.Replace(fileName, newName);
                 File.Copy(sourcePath, destFileName);
+                dbManager.InsertActivity(userId, NormalPath(destFileName), ActivityType.Create);
             }
             else
             {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -257,27 +259,6 @@ namespace MyCathedra
             }
         }
 
-        private async void Add(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(TitlePath)) return;
-
-            var fileDialog = new OpenFileDialog
-            {
-                InitialDirectory = "c:\\",
-                Multiselect = false,
-                Filter = "Документы |*.doc;*.xls;*.ppt;*.txt;*.pdf;*.docx | Все файлы (*.*)|*.*",
-                RestoreDirectory = true
-            };
-
-            var showDialog = fileDialog.ShowDialog();
-            if (showDialog == null || !showDialog.Value) return;
-
-            var file = fileDialog.FileName;
-            var path = _fileManager.AddFile(file, TitlePath);
-            await _dbManager.InsertActivity(_userId, path, ActivityType.Create);
-            DataGridUpdate();
-        }
-
         private void Back(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitlePath)) return;
@@ -340,10 +321,33 @@ namespace MyCathedra
         {
             if (!(DataGrid.CurrentItem is FileInfo fileInfo)) return;
             var messageBoxResult =
-                MessageBox.Show($@"Удалить ""{fileInfo.Name}""?", "Удаление!", MessageBoxButton.YesNo);
+                MessageBox.Show($@"Удалить ""{fileInfo.Name}""?", "Удаление!", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
             if (messageBoxResult != MessageBoxResult.Yes) return;
             _fileManager.Delete(fileInfo, _dbManager, _userId);
 //            _dbManager.InsertActivity(_userId, fileInfo.Path, ActivityType.Delete);
+            DataGridUpdate();
+        }
+
+        private async void Add(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TitlePath)) return;
+
+            var fileDialog = new OpenFileDialog
+            {
+                InitialDirectory = "c:\\",
+                Multiselect = false,
+                Filter = "Документы |*.doc;*.xls;*.ppt;*.txt;*.pdf;*.docx | Все файлы (*.*)|*.*",
+                RestoreDirectory = true
+            };
+
+            var showDialog = fileDialog.ShowDialog();
+            if (showDialog == null || !showDialog.Value) return;
+
+            var file = fileDialog.FileName;
+            await AddFile(file);
+//            var path = _fileManager.AddFile(file, TitlePath);
+//            await _dbManager.InsertActivity(_userId, path, ActivityType.Create);
             DataGridUpdate();
         }
 
@@ -357,11 +361,24 @@ namespace MyCathedra
 
             foreach (var file in files)
             {
-                var filePath = _fileManager.AddFile(file, TitlePath);
-                await _dbManager.InsertActivity(_userId, filePath, ActivityType.Create);
+                await AddFile(file);
             }
 
             DataGridUpdate();
+        }
+
+        private async Task AddFile(string file)
+        {
+            try
+            {
+                var filePath = _fileManager.AddFile(file, TitlePath);
+                await _dbManager.InsertActivity(_userId, filePath, ActivityType.Create);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show($@"Файл ""{file}"" уже существует.", "Файл уже существует.", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
 
         private void Search(object sender, RoutedEventArgs e)
