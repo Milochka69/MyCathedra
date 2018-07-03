@@ -131,17 +131,21 @@ namespace MyCathedra.FileManager
             {
                 var directoryName = sourcePath.Remove(0, sourcePath.LastIndexOf('\\') + 1);
                 if (string.IsNullOrWhiteSpace(directoryName)) return;
+
+                var newPath = sourcePath.Remove(sourcePath.LastIndexOf('\\') + 1) + newName;
+
+                Directory.CreateDirectory(newPath);
+
+                var regex = new Regex(Regex.Escape(sourcePath));
                 foreach (var dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
                 {
-                    var regex = new Regex(Regex.Escape(directoryName));
-                    var replace = regex.Replace(dirPath, newName, 1);
+                    var replace = regex.Replace(dirPath, newPath, 1);
                     Directory.CreateDirectory(replace);
                 }
 
                 foreach (var filePath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
                 {
-                    var regex = new Regex(Regex.Escape(directoryName));
-                    var destFileName = regex.Replace(filePath, newName, 1);
+                    var destFileName = regex.Replace(filePath, newPath, 1);
                     File.Copy(filePath, destFileName, true);
                     dbManager.InsertActivity(userId, NormalPath(destFileName), ActivityType.Create);
                 }
